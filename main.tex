@@ -125,29 +125,23 @@ The wide adoption of Transformer architecture also led to more efficient variant
 \paragraph{Problem that SortFormer solves}
 % In the application for language modeling in \cite{radford2019language} or speech recognition \cite{radford2023robust}, input sequence $\mathbf{X}$ 
 
-The input sequence \( \mathbf{X} \) can be represented as:
-\begin{align}
-  \mathbf{X} & = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_T\} \\
-  \mathbf{Y} & = \{\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_T\}
-\end{align}
+% The input sequence \( \mathbf{X} \) can be represented as:
+% \begin{align}
+%   \mathbf{X} & = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_T\} \\
+%   \mathbf{Y} & = \{\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_T\}
+% \end{align}
 
-where each \( \mathbf{x}_i \) is a vector representing a token or embedding in the input sequence.
-
+% where each \( \mathbf{x}_i \) is a vector representing a token or embedding in the input sequence.
 % Output Sequence
-The output sequence \( \mathbf{Y} \) can be represented as:
+% The output sequence \( \mathbf{Y} \) can be represented as:
+% where each \( \mathbf{y}_j \) is a vector representing a token in the output sequence.
 
-where each \( \mathbf{y}_j \) is a vector representing a token in the output sequence.
-
-We propose a model designed for the simultaneous estimation of class presences from a sequence of input tokens. Consider a set of frame-wise \( F \)-dimensional embedding vectors $ \{ \mathbf{x}_t \}_{t=1}^T $, where $ \mathbf{x}_t \in \mathbb{R}^D, t = 1, 2, \ldots, T $, representing the frame index. SortFormer is tasked with estimating the class presences \( \left(\mathbf{y}_t\right)_{t=1}^T \). In this context, \( \mathbf{y}_t = \left[y_{1, t}, y_{2, t}, \ldots, y_{K, t}\right]^{\top} \) denotes the class presences of \( K \) classes at time \( t \). Each \( y_{k, t} \) is defined as follows:
-
-\begin{align}
-  y_{k, t} = \begin{cases}
-               0, & \text{if class } k \text{ is present at time } t,     \\
-               1, & \text{if class } k \text{ is not present at time } t.
-             \end{cases}
-\end{align}
-
-SortFormer operates under the assumption that $ y_{k, t} $ is conditionally independent given the embedding vectors (features). This assumption is formalized as:
+We propose a model designed for the simultaneous estimation of class presences from a sequence of input tokens.
+Consider a set of frame-wise \( F \)-dimensional embedding vectors
+$ \{ \mathbf{x}_t \}_{t=1}^T $, where $ \mathbf{x}_t \in \mathbb{R}^D, t = 1, 2, \ldots, T $, representing the frame index.
+Given the input sequence, the model is expected to generate the estimated sequence $\{ \mathbf{y}_t \}_{t=1}^T$, where $ \mathbf{y}_t \in \mathbb{R}^K, t = 1, 2, \ldots, T $.
+SortFormer is tasked with estimating the class presences \( \left\{\mathbf{y}_t\right\}_{t=1}^T \). In this context, $\mathbf{y}_t =$ {\small $\left[y_{1, t}, y_{2, t}, \ldots, y_{K, t}\right]^{\top}$}
+denotes the class presences of \( K \) classes at time \( t \). SortFormer operates under the assumption that $ y_{k, t} $ is conditionally independent given the embedding vectors (features). This assumption is formalized as:
 
 \begin{align}
   P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) = \prod_{k=1}^K\prod_{t=1}^T  P\left(y_{k, t} \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right).
@@ -159,12 +153,32 @@ Under this framework, the task at hand is construed as a multi-label classificat
   \left(\mathbf{p}_1, \ldots, \mathbf{p}_T\right) = f_{\Theta}\left(\mathbf{x}_1, \ldots, \mathbf{x}_T\right),
 \end{align}
 
-where \( \mathbf{p}_t = \left[p_{1, t}, \ldots, p_{K, t}\right]^{\top} \in (0,1)^S \) represents the posterior probabilities of the presences of \( S \) classes at frame index \( t \) and f represents the Sortformer model with parameter . The estimation of speech presences $\left\{\hat{\mathbf{y}}_t\right\}_{t=1}^T$ is given by:
-
+where \( \mathbf{p}_t = \left[p_{1, t}, \ldots, p_{K, t}\right]^{\top} \in (0,1)^S \) represents the posterior probabilities of the presences of \( S \) classes at frame index \( t \) and f represents
+the Sortformer model with parameter.
+Each \( y_{k, t} \) is defined as follows depending on the value of \( p_{k, t} \):
 \begin{align}
-  \hat{\mathbf{y}}_1, \ldots, \hat{\mathbf{y}}_T & = \underset{\mathbf{y}_k \in \mathbf{Y}}{\arg\max} P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right),
+  y_{k,t} = 
+  \begin{cases} 
+      1 & \text{if } p_{k,t} > 0.5 \\
+      0 & \text{if } p_{k,t} \leq 0.5 
+  \end{cases}
 \end{align}
 
+The estimation of class presences $\left\{\hat{\mathbf{y}}_t\right\}_{t=1}^T$ is given by:
+
+\begin{align}
+  (\hat{\mathbf{y}}_1, \ldots, \hat{\mathbf{y}}_T) & = \underset{\mathbf{y}_k \in \mathbf{Y}}{\arg\max} \big\{ P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) \big\},
+  \label{eq:sortformer_vector}
+\end{align}
+The equation \ref{eq:sortformer_vector} can be rewritten in matrix form by concatenating the vectors $ \mathbf{X} = [ \mathbf{x}_1 \mathbf{x}_2 \ldots, \mathbf{x}_T ] $,
+where each column of $\mathbf{Y}$ represents the class presences at time $t$, $ \mathbf{Y} = [\mathbf{y}_1 \, \mathbf{y}_2 \, \ldots \, \mathbf{y}_T]$.
+In the simplest form, the model can be represented as:
+\begin{align}
+\mathbf{Y} = f_{\Theta}\left(\mathbf{X}\right),
+\end{align}
+where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( \mathbf{Y} \in \mathbb{R}^{K \times T} \) is a binary matrix contains an output sequence. 
+The most crucial part of the problem is the number of none-zero rows in the output sequence \( \mathbf{Y} \) is determined by the estimation from the model based on the input sequence \( \mathbf{X} \).
+This 
 
 \paragraph{Permutation Invariance in Neural Network}
 Problem
