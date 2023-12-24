@@ -107,17 +107,17 @@ NVIDIA, Santa Clara, CA, USA
 
 
 \begin{abstract}
-We propose \textit{SortFormer} architecture, which is a Transformer variant that encodes permutation information into hidden states. We address the challenge of permutation invariance in processing sequential data using Transformer architectures. Despite their effectiveness in learning and generalizing across text, speech, and image data, Transformers struggle with inputs where permutations should be disregarded. This limitation often results in significant overfitting where the trained model hardly handles permutations on on the unseen datapoints. We identify that the inherent design of the original Transformer architecture contributes to this deficiency. 
-% To overcome this, we introduce \textit{SortFormer}, a novel architecture that integrates a sorting mechanism to establish a unique representation for various permutations. 
-SortFormer operates by generating estimated labels at each layer, which are then sorted according to their arrival order. These sequentially ordered labels serve as a permutative encoding, guiding the Transformer model in recognizing the sequence order. Through ablation studies, we demonstrate that SortFormer exhibits reduced overfitting and enhanced generalization capabilities on unseen data sequences. Furthermore, we provide insights into the practical applicability of SortFormer in real-world scenarios. Our findings suggest that this innovative architecture holds significant promise for improving the robustness and versatility of Transformer models in handling permutation-sensitive sequential data.
-% We propose a novel but concise way to tackle permutation problem for sequential data. While there are numerous variants of transformer architecture that can successfully learn sequential data and generalize the problem for text, speech and image. However, when it comes to inputs where the combination of permutation should be ignored, it is very challenging to let Transformer to learn only non-permutative information and generalize on the unseen data points. Thus, we show that the original Transformer architecture does not have ability to resolve permutation problem which leads to significant overfitting. We introduce a new type of architecture SortFormer which uses sorting mechanism to generate a unique representation for numerous permutations. SortFormer generates the estimated label at each layer then sort the labels in terms of arrival order. The sorted estimated labels are employed as permutative encoding to inform the order of sequence to the Transformer model. We show that the proposed architecture shows far less amount of overfitting and generalize better on unseen sequences through ablation studies. In addition, we show that the proposed architecture can be used for the real-life problems.  
+  We propose \textit{SortFormer} architecture, which is a Transformer variant that encodes permutation information into hidden states. We address the challenge of permutation invariance in processing sequential data using Transformer architectures. Despite their effectiveness in learning and generalizing across text, speech, and image data, Transformers struggle with inputs where permutations should be disregarded. This limitation often results in significant overfitting where the trained model hardly handles permutations on on the unseen datapoints. We identify that the inherent design of the original Transformer architecture contributes to this deficiency.
+  % To overcome this, we introduce \textit{SortFormer}, a novel architecture that integrates a sorting mechanism to establish a unique representation for various permutations. 
+  SortFormer operates by generating estimated labels at each layer, which are then sorted according to their arrival order. These sequentially ordered labels serve as a permutative encoding, guiding the Transformer model in recognizing the sequence order. Through ablation studies, we demonstrate that SortFormer exhibits reduced overfitting and enhanced generalization capabilities on unseen data sequences. Furthermore, we provide insights into the practical applicability of SortFormer in real-world scenarios. Our findings suggest that this innovative architecture holds significant promise for improving the robustness and versatility of Transformer models in handling permutation-sensitive sequential data.
+  % We propose a novel but concise way to tackle the permutation problem for sequential data. While there are numerous variants of transformer architecture that can successfully learn sequential data and generalize the problem for text, speech and image. However, when it comes to inputs where the combination of permutation should be ignored, it is very challenging to let Transformer to learn only non-permutative information and generalize on the unseen data points. Thus, we show that the original Transformer architecture does not have ability to resolve permutation problem which leads to significant overfitting. We introduce a new type of architecture SortFormer which uses sorting mechanism to generate a unique representation for numerous permutations. SortFormer generates the estimated label at each layer then sort the labels in terms of arrival order. The sorted estimated labels are employed as permutative encoding to inform the order of sequence to the Transformer model. We show that the proposed architecture shows far less amount of overfitting and generalize better on unseen sequences through ablation studies. In addition, we show that the proposed architecture can be used for the real-life problems.  
 \end{abstract}
 
 
 \section{Introduction}
-
-In the recent years, the large language models (LLMs) \cite{radford2019language, rao2022megatron} gained significant popularity and most of the LLMs are based on the Transformer~\cite{vaswani2017attention} architecture that is now being used for not only language modeling 
-as language understanding \cite{devlin2018bert, raffel2019learning}, GPT3~\cite{brown2020gpt3}. Other tasks such as image processing field also started leveraging Transformers such as image generation~\cite{parmar2018image} and image recognition with ViT~\cite{dosovitskiy2020image}. In speech recognition field, Conformer~\cite{gulati2020conformer} and Whisper~\cite{radford2023robust} successfully employed Transformer archietcture to speech-to-text (STT) tasks. 
+Testing autobuild 8 \\
+In recent years, the large language models (LLMs) \cite{radford2019language, rao2022megatron} gained significant popularity and most of the LLMs are based on the Transformer~\cite{vaswani2017attention} architecture that is now being used for not only language modeling
+as language understanding \cite{devlin2018bert, raffel2019learning}, GPT3~\cite{brown2020gpt3}. Other tasks such as image processing field also started leveraging Transformers such as image generation~\cite{parmar2018image} and image recognition with ViT~\cite{dosovitskiy2020image}. In speech recognition field, Conformer~\cite{gulati2020conformer} and Whisper~\cite{radford2023robust} successfully employed Transformer archietcture to speech-to-text (STT) tasks.
 
 \paragraph{Transformer Variants for Efficiency}
 The wide adoption of Transformer architecture also led to more efficient variants of the model such as Reformer~\cite{kitaev2019reformer}, which introduces efficient memory handling in Transformers through locality-sensitive hashing; Transformer-XL~\cite{dai2019transformer}, enhancing Transformer models for long sequence tasks with segment-level recurrence and a novel positional encoding; Performe~\cite{choromanski2020rethinking}, offering a scalable Transformer variant with the new attention mechanism for processing long sequences efficiently; Longformer~\cite{beltagy2020longformer}, designed for longer texts with a modified attention mechanism that combines sliding window and global attention for tasks like document classification and question answering; SegFormer~\cite{xie2021segformer}, an approach for semantic segmentation combining a hierarchical Transformer encoder with a lightweight MLP decoder; and RoFormer\cite{su2023roformer}, which enhances Transformer models with a rotational position encoding scheme for improved performance in various natural language processing tasks. These variants showcase significant advancements in handling long sequences, improving memory efficiency, and extending the applicability of Transformer models in various domains, including text and image processing.
@@ -127,8 +127,8 @@ The wide adoption of Transformer architecture also led to more efficient variant
 
 The input sequence \( \mathbf{X} \) can be represented as:
 \begin{align}
-\mathbf{X} & = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_T\} \\
-\mathbf{Y} & = \{\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_T\} 
+  \mathbf{X} & = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_T\} \\
+  \mathbf{Y} & = \{\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_T\}
 \end{align}
 
 where each \( \mathbf{x}_i \) is a vector representing a token or embedding in the input sequence.
@@ -141,42 +141,40 @@ where each \( \mathbf{y}_j \) is a vector representing a token in the output seq
 We propose a model designed for the simultaneous estimation of class presences from a sequence of input tokens. Consider a set of frame-wise \( F \)-dimensional embedding vectors $ \{ \mathbf{x}_t \}_{t=1}^T $, where $ \mathbf{x}_t \in \mathbb{R}^D, t = 1, 2, \ldots, T $, representing the frame index. SortFormer is tasked with estimating the class presences \( \left(\mathbf{y}_t\right)_{t=1}^T \). In this context, \( \mathbf{y}_t = \left[y_{1, t}, y_{2, t}, \ldots, y_{K, t}\right]^{\top} \) denotes the class presences of \( K \) classes at time \( t \). Each \( y_{k, t} \) is defined as follows:
 
 \begin{align}
-y_{k, t} = \begin{cases} 
-0, & \text{if class } k \text{ is present at time } t, \\
-1, & \text{if class } k \text{ is not present at time } t.
-\end{cases}
+  y_{k, t} = \begin{cases}
+               0, & \text{if class } k \text{ is present at time } t,     \\
+               1, & \text{if class } k \text{ is not present at time } t.
+             \end{cases}
 \end{align}
 
 SortFormer operates under the assumption that $ y_{k, t} $ is conditionally independent given the embedding vectors (features). This assumption is formalized as:
 
 \begin{align}
-P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) = \prod_{k=1}^K\prod_{t=1}^T  P\left(y_{k, t} \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right).
+  P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) = \prod_{k=1}^K\prod_{t=1}^T  P\left(y_{k, t} \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right).
 \end{align}
 
 Under this framework, the task at hand is construed as a multi-label classification problem, which is amenable to modeling via a neural network, denoted as  $f_{\Theta}$. The model is defined as:
 
 \begin{align}
-\left(\mathbf{p}_1, \ldots, \mathbf{p}_T\right) = f_{\Theta}\left(\mathbf{x}_1, \ldots, \mathbf{x}_T\right),
+  \left(\mathbf{p}_1, \ldots, \mathbf{p}_T\right) = f_{\Theta}\left(\mathbf{x}_1, \ldots, \mathbf{x}_T\right),
 \end{align}
 
 where \( \mathbf{p}_t = \left[p_{1, t}, \ldots, p_{K, t}\right]^{\top} \in (0,1)^S \) represents the posterior probabilities of the presences of \( S \) classes at frame index \( t \) and f represents the Sortformer model with parameter . The estimation of speech presences $\left\{\hat{\mathbf{y}}_t\right\}_{t=1}^T$ is given by:
 
 \begin{align}
-\hat{\mathbf{y}}_1, \ldots, \hat{\mathbf{y}}_T & = \underset{\mathbf{y}_k \in \mathbf{Y}}{\arg\max} P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right),
+  \hat{\mathbf{y}}_1, \ldots, \hat{\mathbf{y}}_T & = \underset{\mathbf{y}_k \in \mathbf{Y}}{\arg\max} P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right),
 \end{align}
 
 
-
-
 \paragraph{Permutation Invariance in Neural Network}
-Problem 
+Problem
 
 \section{Prior Works}
 
 \paragraph{clustering}
-There have been numerous studies on making Transformer to perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of published work regarding general-purpose transformer variants which can handle permutation 
+There have been numerous studies on making Transformer to perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of published work regarding general-purpose transformer variants which can handle permutation
 
-The most closest previous study to our work is Set-Transformer \cite{lee2019set}, 
+The most closest previous study to our work is Set-Transformer \cite{lee2019set},
 \paragraph{permutation invairant loss}
 
 \paragraph{clustering}
@@ -200,25 +198,25 @@ The most closest previous study to our work is Set-Transformer \cite{lee2019set}
 % \end{figure}
 
 \begin{figure}[ht]
-% \begin{subfigure}[width=0.5\textwidth]{}
-\begin{minipage}[b]{0.33\textwidth}
-\centering
-\includegraphics[width=0.73\linewidth]{pics/TransformerEncoder.drawio.png} 
-\caption{Caption1}
-\label{fig:subim1}
-\end{minipage}
-\begin{minipage}[b]{0.33\textwidth}
-\centering
-\includegraphics[width=0.9\linewidth]{pics/SortFormerEncoder.png}
-\caption{Caption 2}
-\label{fig:subim2}
-\end{minipage}
-\begin{minipage}[b]{0.33\textwidth}
-\centering
-\includegraphics[width=0.5\linewidth]{pics/SortFormer_example.drawio.png}
-\caption{Caption 3}
-\label{fig:subim3}
-\end{minipage}
+  % \begin{subfigure}[width=0.5\textwidth]{}
+  \begin{minipage}[b]{0.33\textwidth}
+    \centering
+    \includegraphics[width=0.73\linewidth]{pics/TransformerEncoder.drawio.png}
+    \caption{Caption1}
+    \label{fig:subim1}
+  \end{minipage}
+  \begin{minipage}[b]{0.33\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{pics/SortFormerEncoder.png}
+    \caption{Caption 2}
+    \label{fig:subim2}
+  \end{minipage}
+  \begin{minipage}[b]{0.33\textwidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{pics/SortFormer_example.drawio.png}
+    \caption{Caption 3}
+    \label{fig:subim3}
+  \end{minipage}
 \end{figure}
 
 
@@ -229,7 +227,7 @@ Let $Y \in \mathcal{Y}$ be some random variable of interest, to be predicted fro
 Definition 1. The conditional distribution $P_{Y \mid \mathbf{X}_n}$ of $Y$ given $\mathbf{X}_n$ is $\mathbb{S}_n$-invariant if for all $B \in \mathcal{B}(\mathcal{Y})$ and $\pi \in \mathbb{S}_n$,
 
 \begin{align}
-P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
+  P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
 \end{align}
 
 Together with exchangeability of $P_{\mathbf{X}_n}$, conditional invariance implies the joint equality $\left(\pi \cdot \mathbf{X}_n, Y\right) \stackrel{\text { d }}{=}\left(\mathbf{X}_n, Y\right)$ for all $\pi \in \mathbb{S}_n$.
@@ -239,7 +237,7 @@ In the neural networks literature, equivariance plays a key role in the hidden l
 Definition 2. Let $\mathbf{Y}_n \in \mathcal{Y}^n$ be a random $\mathcal{Y}$-valued sequence. The conditional distribution $P_{\mathbf{Y}_n \mid \mathbf{x}_n}$ of $\mathbf{Y}_n$ given $\mathbf{X}_n$ is $\mathbb{S}_n$-equivariant if for all $B \in \mathcal{B}\left(\mathcal{Y}^n\right)$ and $\pi \in \mathbb{S}_n$,
 
 \begin{align}
-P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\pi \cdot \mathbf{Y}_n \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\mathbf{Y}_n \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
+  P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\pi \cdot \mathbf{Y}_n \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\mathbf{Y}_n \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
 \end{align}
 
 Together with exchangeability of $P_{\mathbf{X}_n}$, conditional invariance implies the joint equality $\left(\pi \cdot \mathbf{X}_n, \pi \cdot \mathbf{Y}_n\right) \stackrel{\mathrm{d}}{=}\left(\mathbf{X}_n, \mathbf{Y}_n\right)$ for all $\pi \in \mathbb{S}_n$
@@ -257,7 +255,7 @@ Please \cite{vaswani2017attention} read the instructions below carefully and fol
 Papers to be submitted to NeurIPS 2023 must be prepared according to the
 instructions presented here. Papers may only be up to {\bf nine} pages long,
 including figures. Additional pages \emph{containing only acknowledgments and
-references} are allowed. Papers that exceed the page limit will not be
+  references} are allowed. Papers that exceed the page limit will not be
 reviewed, or in any other way considered for presentation at the conference.
 
 
@@ -299,7 +297,7 @@ NeurIPS style, please use the \verb+preprint+ option. This will create a
 nonanonymized version of your work with the text ``Preprint. Work in progress.''
 in the footer. This version may be distributed as you see fit, as long as you do not say which conference it was submitted to. Please \textbf{do
   not} use the \verb+final+ option, which should \textbf{only} be used for
-papers accepted to NeurIPS. 
+papers accepted to NeurIPS.
 
 
 At submission time, please omit the \verb+final+ and \verb+preprint+
@@ -531,33 +529,33 @@ achieve this.
 \begin{itemize}
 
 
-\item You should directly generate PDF files using \verb+pdflatex+.
+  \item You should directly generate PDF files using \verb+pdflatex+.
 
 
-\item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
-  menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
-  also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
-  available out-of-the-box on most Linux machines.
+  \item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
+        menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
+        also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
+        available out-of-the-box on most Linux machines.
 
 
-\item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
-  "solid" shapes instead.
+  \item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
+        "solid" shapes instead.
 
 
-\item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
-  the equivalent AMS Fonts:
-\begin{verbatim}
+  \item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
+        the equivalent AMS Fonts:
+        \begin{verbatim}
    \usepackage{amsfonts}
 \end{verbatim}
-followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
-for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
-workaround for reals, natural and complex:
-\begin{verbatim}
+        followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
+        for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
+        workaround for reals, natural and complex:
+        \begin{verbatim}
    \newcommand{\RR}{I\!\!R} %real numbers
    \newcommand{\Nat}{I\!\!N} %natural numbers
    \newcommand{\CC}{I\!\!\!\!C} %complex numbers
 \end{verbatim}
-Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
+        Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
 
 
 \end{itemize}
@@ -588,13 +586,13 @@ necessary.
 
 
 \begin{ack}
-Use unnumbered first level headings for the acknowledgments. All acknowledgments
-go at the end of the paper before the list of references. Moreover, you are required to declare
-funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
-More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2023/PaperInformation/FundingDisclosure}.
+  Use unnumbered first level headings for the acknowledgments. All acknowledgments
+  go at the end of the paper before the list of references. Moreover, you are required to declare
+  funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
+  More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2023/PaperInformation/FundingDisclosure}.
 
 
-Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
+  Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
 \end{ack}
 
 

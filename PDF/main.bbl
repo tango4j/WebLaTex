@@ -1,0 +1,98 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Beltagy et~al.(2020)Beltagy, Peters, and Cohan]{beltagy2020longformer}
+Iz~Beltagy, Matthew~E Peters, and Arman Cohan.
+\newblock Longformer: The long-document transformer.
+\newblock \emph{arXiv preprint arXiv:2004.05150}, 2020.
+
+\bibitem[Bloem-Reddy and Teh(2018)]{bloem2018neural}
+Benjamin Bloem-Reddy and Yee~Whye Teh.
+\newblock Neural network models of exchangeable sequences.
+\newblock In \emph{NeurIPS Workshop on Bayesian Deep Learning}, 2018.
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subramanian, Kaplan, Dhariwal, Neel, Shyam, Mishkin, and Radford]{brown2020gpt3}
+Tom~B Brown, Benjamin Mann, Nick Ryder, Mike Subramanian, Jared Kaplan, Praveen Dhariwal, Dario Neel, Pranav Shyam, Adam Mishkin, and Alec Radford.
+\newblock Gpt-3: Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2001.08237}, 2020.
+
+\bibitem[Choromanski et~al.(2020)Choromanski, Likhosherstov, Dohan, Song, Gane, Sarlos, Hawkins, Davis, Mohiuddin, Kaiser, et~al.]{choromanski2020rethinking}
+Krzysztof Choromanski, Valerii Likhosherstov, David Dohan, Xingyou Song, Andreea Gane, Tamas Sarlos, Peter Hawkins, Jared Davis, Afroz Mohiuddin, Lukasz Kaiser, et~al.
+\newblock Rethinking attention with performers.
+\newblock \emph{arXiv preprint arXiv:2009.14794}, 2020.
+
+\bibitem[Dai et~al.(2019)Dai, Yang, Yang, Carbonell, Le, and Salakhutdinov]{dai2019transformer}
+Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc~V Le, and Ruslan Salakhutdinov.
+\newblock Transformer-xl: Attentive language models beyond a fixed-length context.
+\newblock \emph{arXiv preprint arXiv:1901.02860}, 2019.
+
+\bibitem[Devlin et~al.(2018)Devlin, Chang, Lee, Niu, Toutanova, M.~Belinkov, Peters, Nair, and Poliakoff]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Niu, Kristina Toutanova, Yonatan M.~Belinkov, Michael Peters, Vamsi Nair, and Paul Poliakoff.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock In \emph{Advances in neural information processing systems}, pages 9385--9404, 2018.
+
+\bibitem[Dosovitskiy et~al.(2020)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, et~al.]{dosovitskiy2020image}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et~al.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock \emph{arXiv preprint arXiv:2010.11929}, 2020.
+
+\bibitem[Gulati et~al.(2020)Gulati, Qin, Chiu, Parmar, Zhang, Yu, Han, Wang, Zhang, Wu, et~al.]{gulati2020conformer}
+Anmol Gulati, James Qin, Chung-Cheng Chiu, Niki Parmar, Yu~Zhang, Jiahui Yu, Wei Han, Shibo Wang, Zhengdong Zhang, Yonghui Wu, et~al.
+\newblock Conformer: Convolution-augmented transformer for speech recognition.
+\newblock \emph{arXiv preprint arXiv:2005.08100}, 2020.
+
+\bibitem[Kitaev et~al.(2019)Kitaev, Kaiser, and Levskaya]{kitaev2019reformer}
+Nikita Kitaev, Lukasz Kaiser, and Anselm Levskaya.
+\newblock Reformer: The efficient transformer.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Lee et~al.(2019)Lee, Lee, Kim, Kosiorek, Choi, and Teh]{lee2019set}
+Juho Lee, Yoonho Lee, Jungtaek Kim, Adam Kosiorek, Seungjin Choi, and Yee~Whye Teh.
+\newblock Set transformer: A framework for attention-based permutation-invariant neural networks.
+\newblock In \emph{International conference on machine learning}, pages 3744--3753. PMLR, 2019.
+
+\bibitem[Parmar et~al.(2018)Parmar, Vaswani, Uszkoreit, Jones, Gómez, Polosukhin, Kaiser, and Polosukhin]{parmar2018image}
+Niki Parmar, Ashish Vaswani, Jakob Uszkoreit, Llion Jones, Aidan~N Gómez, Illia Polosukhin, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Image transformer.
+\newblock \emph{arXiv preprint arXiv:1802.05720}, 2018.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, Sutskever, et~al.]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et~al.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1\penalty0 (8):\penalty0 9, 2019.
+
+\bibitem[Radford et~al.(2023)Radford, Kim, Xu, Brockman, McLeavey, and Sutskever]{radford2023robust}
+Alec Radford, Jong~Wook Kim, Tao Xu, Greg Brockman, Christine McLeavey, and Ilya Sutskever.
+\newblock Robust speech recognition via large-scale weak supervision.
+\newblock In \emph{International Conference on Machine Learning}, pages 28492--28518. PMLR, 2023.
+
+\bibitem[Raffel et~al.(2019)Raffel, Shazeer, Roberts, Lee, Parekh, and Narasimhan]{raffel2019learning}
+Colin Raffel, Noam Shazeer, Adam Roberts, Kim Lee, Nikita Parekh, and Karthik Narasimhan.
+\newblock Learning to transfer the effectiveness of pretraining to downstream tasks.
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Rao et~al.(2022)Rao, Chen, Hendricks, Kreutzer, Li, Mishkin, Price, Puri, Qadir, Reddi, Shobhana, Talwar, Tay, Wang, Wei, Wilcox, Wu, Yuan, Zhang, and Zhou]{rao2022megatron}
+Rajkrishna Rao, Chenglong Chen, Marcus Hendricks, Mathias Kreutzer, Rasa Li, Michael Mishkin, Noah Price, Shafiq Puri, Muhammed Qadir, Siva Reddi, Vikas Shobhana, Yash Talwar, Yen-Ling Tay, Tong Wang, Ming Wei, Eric Wilcox, Yu~Wu, Yuan Yuan, Pengcheng Zhang, and Yu~Zhou.
+\newblock Megatron-turing nlg: Training an extensively labeled 530b parameter language model.
+\newblock \emph{arXiv preprint arXiv:2201.11991}, 2022.
+
+\bibitem[Su et~al.(2023)Su, Ahmed, Lu, Pan, Bo, and Liu]{su2023roformer}
+Jianlin Su, Murtadha Ahmed, Yu~Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu.
+\newblock Roformer: Enhanced transformer with rotary position embedding.
+\newblock \emph{Neurocomputing}, page 127063, 2023.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages 5998--6008, 2017.
+
+\bibitem[Xie et~al.(2021)Xie, Wang, Yu, Anandkumar, Alvarez, and Luo]{xie2021segformer}
+Enze Xie, Wenhai Wang, Zhiding Yu, Anima Anandkumar, Jose~M Alvarez, and Ping Luo.
+\newblock Segformer: Simple and efficient design for semantic segmentation with transformers.
+\newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 12077--12090, 2021.
+
+\end{thebibliography}
