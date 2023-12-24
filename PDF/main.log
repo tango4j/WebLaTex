@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.9)  24 DEC 2023 19:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.7.9)  24 DEC 2023 20:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -537,34 +537,34 @@ Package microtype Info: Loading generic protrusion settings for font family
  [1
 
 
-{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
-<pics/TransformerEncoder.drawio.png, id=134, 622.325pt x 867.24pt>
+{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}] [2]
+<pics/TransformerEncoder.drawio.png, id=159, 622.325pt x 867.24pt>
 File: pics/TransformerEncoder.drawio.png Graphic file (type png)
 <use pics/TransformerEncoder.drawio.png>
-Package pdftex.def Info: pics/TransformerEncoder.drawio.png  used on input line 218.
+Package pdftex.def Info: pics/TransformerEncoder.drawio.png  used on input line 239.
 (pdftex.def)             Requested size: 95.75409pt x 133.42833pt.
-<pics/SortFormerEncoder.png, id=136, 847.165pt x 1437.37pt>
+<pics/SortFormerEncoder.png, id=161, 847.165pt x 1437.37pt>
 File: pics/SortFormerEncoder.png Graphic file (type png)
 <use pics/SortFormerEncoder.png>
-Package pdftex.def Info: pics/SortFormerEncoder.png  used on input line 224.
+Package pdftex.def Info: pics/SortFormerEncoder.png  used on input line 245.
 (pdftex.def)             Requested size: 118.05287pt x 200.28732pt.
-<pics/SortFormer_example.drawio.png, id=137, 417.56pt x 815.045pt>
+<pics/SortFormer_example.drawio.png, id=162, 417.56pt x 815.045pt>
 File: pics/SortFormer_example.drawio.png Graphic file (type png)
 <use pics/SortFormer_example.drawio.png>
-Package pdftex.def Info: pics/SortFormer_example.drawio.png  used on input line 230.
+Package pdftex.def Info: pics/SortFormer_example.drawio.png  used on input line 251.
 (pdftex.def)             Requested size: 65.58537pt x 128.0096pt.
- [2]
-Underfull \hbox (badness 2197) in paragraph at lines 257--258
+ [3 <./pics/TransformerEncoder.drawio.png> <./pics/SortFormerEncoder.png> <./pics/SortFormer_example.drawio.png>]
+Underfull \hbox (badness 2197) in paragraph at lines 278--279
 []\T1/ptm/m/n/10 (+20) Together with ex-change-abil-ity of $\OML/cmm/m/it/10 P[]$\T1/ptm/m/n/10 (+20) , con-di-tional in-vari-ance im-plies the joint equal-ity
  []
 
-[3 <./pics/TransformerEncoder.drawio.png> <./pics/SortFormerEncoder.png> <./pics/SortFormer_example.drawio.png>] [4] [5]
-Underfull \hbox (badness 3579) in paragraph at lines 520--521
+[4] [5]
+Underfull \hbox (badness 3579) in paragraph at lines 541--542
 \T1/cmtt/m/n/10 503 / why-[]is-[]preferable-[]to$[] \T1/ptm/m/n/10 (+20) and []$\T1/cmtt/m/n/10 https : / / tex . stackexchange . com / questions / 40492 /
  []
 
 [6]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 546.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 567.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [7] (PDF/main.bbl [8]) [9] (PDF/main.aux)
@@ -576,18 +576,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 2A20CA3BE9B7D098AFA73CF9AD1C989C;3284.
  ) 
 Here is how much of TeX's memory you used:
- 14671 strings out of 475237
- 229942 string characters out of 5764559
+ 14678 strings out of 475237
+ 230004 string characters out of 5764559
  1934244 words of memory out of 5000000
  35378 multiletter control sequences out of 15000+600000
- 607693 words of font info for 222 fonts, out of 8000000 for 9000
+ 607953 words of font info for 226 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,16n,79p,1376b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,16n,79p,1376b,665s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PDF/main.pdf (9 pages, 402422 bytes).
+Output written on PDF/main.pdf (9 pages, 403840 bytes).
 PDF statistics:
- 342 PDF objects out of 1000 (max. 8388607)
- 282 compressed objects within 3 object streams
- 74 named destinations out of 1000 (max. 500000)
+ 343 PDF objects out of 1000 (max. 8388607)
+ 283 compressed objects within 3 object streams
+ 75 named destinations out of 1000 (max. 500000)
  54968 words of extra memory for PDF output out of 61914 (max. 10000000)
 

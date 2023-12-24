@@ -177,8 +177,51 @@ In the simplest form, the model can be represented as:
 \mathbf{Y} = f_{\Theta}\left(\mathbf{X}\right),
 \end{align}
 where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( \mathbf{Y} \in \mathbb{R}^{K \times T} \) is a binary matrix contains an output sequence. 
-The most crucial part of the problem is the number of none-zero rows in the output sequence \( \mathbf{Y} \) is determined by the estimation from the model based on the input sequence \( \mathbf{X} \).
-This 
+
+\paragraph{Task Description}
+% The most crucial part of the problem is the number of none-zero rows in the output sequence $\mathbf{Y}$ is determined by the estimation 
+% from the model based on the input sequence \( \mathbf{X} \), where $\mathbf{X}$ is an unseen type of data. The model needs to
+% count the number of classes in the input sequence and generate the corresponding class label for each class.
+% While this problem has similar characteristics to the clustering problem where we need to count the number of clusters and assign the cluster
+% labels, the difference is: first, most of the clustering systems cannot handle the multiple labels for each data point. 
+% Second, the clustering systems cannot handle `no label` case where no identifiable patterns exist in the frame. 
+
+% For example, the most suitable example for this problem is the speaker diarization problem. In speaker diarization problem,
+% the input sequence is the audio signal and the output sequence is the generic identifiers (e.g., speaker1, speaker2, ..., speakerN) \
+% for each frame. However, there are frames where speakers do not exist where the output $\mathbf{y}_t$ is all zeros. 
+% In addition, there are frames where multiple speakers exist where the output $\mathbf{y}_t$ is a binary vector with multiple ones.
+% This type of formulation is not only applicable to speaker diarization task, but also applicable to numerous other problems such as object detection in 
+% anomaly detection in time series data, 
+% open-set recognition in image classification,
+% unknown language detection in natural language processing
+% new genre detection in music classification
+% and so on.
+
+In this problem, the core challenge lies in the output sequence $\mathbf{Y}$, where the number of non-zero rows is determined by the model's estimation 
+based on the input sequence $\mathbf{X}$. Here, $\mathbf{X}$ represents an unseen type of data. The model's task is to count the number of distinct classes 
+within the input sequence and generate corresponding class labels for each identified class.
+
+This problem shares similarities with clustering tasks, where the objective is to count the number of clusters and assign labels to them. However, 
+there are key differences: 
+
+firstly, most clustering systems are not designed to assign multiple labels to a single data point. Secondly, clustering systems
+ typically do not accommodate cases with 'no label', where no discernible patterns exist within a given frame.
+
+An illustrative example is the speaker diarization problem. In speaker diarization, the input sequence is an audio signal, and the output sequence comprises 
+generic identifiers (e.g., speaker1, speaker2, ..., speakerN) for each frame. However, challenges arise in frames where no speaker is present, resulting in 
+an output $\mathbf{y}_t$ that consists entirely of zeros. Additionally, complications occur in frames with multiple speakers, where $\mathbf{y}_t$ becomes
+ a binary vector containing multiple ones.
+
+This framework is not only relevant to the speaker diarization task but is also applicable to a variety of other problems, such as 
+anomaly detection in time series data, 
+open-set recognition in image processing,
+open-set facial entity indexation in video streams,
+unknown language detection in natural language processing, 
+and new genre detection in music classification.
+
+
+
+
 
 \paragraph{Permutation Invariance in Neural Network}
 Problem
@@ -317,7 +360,7 @@ papers accepted to NeurIPS.
 At submission time, please omit the \verb+final+ and \verb+preprint+
 options. This will anonymize your submission and add line numbers to aid
 review. Please do \emph{not} refer to these line numbers in your paper as they
-will be removed during generation of camera-ready copies.
+will be removed during the generation of camera-ready copies.
 
 
 The file \verb+neurips_2023.tex+ may be used as a ``shell'' for writing your
