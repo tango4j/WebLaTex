@@ -42,14 +42,14 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
-
+\usepackage{tabularx}
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage{booktabs} % for professional tables
 \usepackage{amsmath} % For advanced math typesetting
 \usepackage{amssymb} % For additional mathematical symbols
-
+\usepackage{enumitem}
 % hyperref makes hyperlinks in the resulting PDF.
 % If your build breaks (sometimes temporarily if a hyperlink spans a page)
 % please comment out the following usepackage line and replace
@@ -157,10 +157,10 @@ where \( \mathbf{p}_t = \left[p_{1, t}, \ldots, p_{K, t}\right]^{\top} \in (0,1)
 the Sortformer model with parameter.
 Each \( y_{k, t} \) is defined as follows depending on the value of \( p_{k, t} \):
 \begin{align}
-  y_{k,t} = 
-  \begin{cases} 
-      1 & \text{if } p_{k,t} > 0.5 \\
-      0 & \text{if } p_{k,t} \leq 0.5 
+  y_{k,t} =
+  \begin{cases}
+    1 & \text{if } p_{k,t} > 0.5    \\
+    0 & \text{if } p_{k,t} \leq 0.5
   \end{cases}
 \end{align}
 
@@ -174,9 +174,9 @@ The equation \ref{eq:sortformer_vector} can be rewritten in matrix form by conca
 where each column of $\mathbf{Y}$ represents the class presences at time $t$, $ \mathbf{Y} = [\mathbf{y}_1 \, \mathbf{y}_2 \, \ldots \, \mathbf{y}_T]$.
 In the simplest form, the model can be represented as:
 \begin{align}
-\mathbf{Y} = f_{\Theta}\left(\mathbf{X}\right),
+  \mathbf{Y} = f_{\Theta}\left(\mathbf{X}\right),
 \end{align}
-where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( \mathbf{Y} \in \mathbb{R}^{K \times T} \) is a binary matrix contains an output sequence. 
+where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( \mathbf{Y} \in \mathbb{R}^{K \times T} \) is a binary matrix contains an output sequence.
 
 \paragraph{Task Description}
 % The most crucial part of the problem is the number of none-zero rows in the output sequence $\mathbf{Y}$ is determined by the estimation 
@@ -197,31 +197,60 @@ where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( 
 % new genre detection in music classification
 % and so on.
 
-In this problem, the core challenge lies in the output sequence $\mathbf{Y}$, where the number of non-zero rows is determined by the model's estimation 
-based on the input sequence $\mathbf{X}$. Here, $\mathbf{X}$ represents an unseen type of data. The model's task is to count the number of distinct classes 
+In this problem, the core challenge lies in the output sequence $\mathbf{Y}$, where the number of frames have non-zero $\mathbf{y}_{t}$ is determined by the model's estimation
+based on the input sequence $\mathbf{X}$. Here, $\mathbf{X}$ represents an unseen type of data. The model's task is to count the number of distinct classes
 within the input sequence and generate corresponding class labels for each identified class.
 
-This problem shares similarities with clustering tasks, where the objective is to count the number of clusters and assign labels to them. However, 
-there are key differences: 
+It is crucial to make a clearn distinction between the problem that SortFormer is tackling and the well known tasks such as clustering, identification tasks. 
+This problem shares similarities with clustering tasks, open-set recognition tasks where the objective is to count the number of clusters and assign labels to them. However,
+there are follwing key characteristics that distinguish this problem from the aforementioned tasks:
 
-firstly, most clustering systems are not designed to assign multiple labels to a single data point. Secondly, clustering systems
- typically do not accommodate cases with 'no label', where no discernible patterns exist within a given frame.
-
-An illustrative example is the speaker diarization problem. In speaker diarization, the input sequence is an audio signal, and the output sequence comprises 
-generic identifiers (e.g., speaker1, speaker2, ..., speakerN) for each frame. However, challenges arise in frames where no speaker is present, resulting in 
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Infer Unseen Data Class} The task is not a typical classification task, where the model needs to classify the unseen type of class. For example, 
+  in open-set face indexing, the model needs to identify the face of people that have not been seen during training time. 
+  \item \textbf{Multi-labels} Each token into SortFormer can have multiple labels. For example, one picture can contain multiple people's faces. Most clustering systems are not designed to assign multiple labels to a single data point.
+  \item \textbf{Non-Event Classification} The system should detect ``class absence'', which requires the model to learn the characteristics of null-class characteristics of the feature input. 
+  Clustering methods typically do not accommodate cases with 'void class', where no discernible patterns exist within a given frame.
+  \item \textbf{Set-based Label Assignment Loss} The model should count the number of sets and label each frame accordingly to get generic identifiers. Followingly, the loss should be calculated based on the set-based label assignment. 
+  This aspect is often handled with permutation invariant loss (PIL).
+  \item \textbf{Small-scale Set Count} The task is expecting $K<10$ classes, which is a small-scale set count. Most of the neural network based clustering systems are designed to handle large-scale set count where $K > 1000$. This also
+  decreases the burden of applying sorting algorithm on the output classes.
+\end{itemize}
+An illustrative example is the speaker diarization problem. In speaker diarization, the input sequence is an audio signal, and the output sequence comprises
+generic identifiers (e.g., speaker1, speaker2, ..., speakerN) for each frame. However, challenges arise in frames where no speaker is present, resulting in
 an output $\mathbf{y}_t$ that consists entirely of zeros. Additionally, complications occur in frames with multiple speakers, where $\mathbf{y}_t$ becomes
- a binary vector containing multiple ones.
+a binary vector containing multiple ones.
 
-This framework is not only relevant to the speaker diarization task but is also applicable to a variety of other problems, such as 
-anomaly detection in time series data, 
+This framework is not only relevant to the speaker diarization task but is also applicable to a variety of other problems, such as
+anomaly detection in time series data,
 open-set recognition in image processing,
 open-set facial entity indexation in video streams,
-unknown language detection in natural language processing, 
+unknown language detection in natural language processing,
 and new genre detection in music classification.
+the following table summarizes the tasks suitable for SortFormer and their corresponding representations.
 
-
-
-
+\begin{table}[h]
+  \centering
+  \renewcommand{\arraystretch}{1.5} % Adjust the 1.5 to increase or decrease spacing
+  \begin{tabularx}{\textwidth}{p{3cm}|p{3cm}|p{2.5cm}|p{3cm}}
+    \toprule
+    \textbf{Task}              & \textbf{Feature Representation} & \textbf{Input Data Type} & \textbf{Output Description}                                          \\
+    \hline
+    Speaker Diarization        & Speaker embeddings              & Audio streams            & Identifiers for each speaker; 'no label' for silent frames           \\
+    \hline
+    Anomaly Detection          & Signal feature embeddings       & Time series data         & Anomaly identifiers; 'no label' for normal data points               \\
+    \hline
+    Open-set Face Indexation   & Face embeddings               & Video streams            & Anonymized identifiers for each face; 'no label' for non-face frames \\
+    \hline
+    Unknown Language Detection & Text embeddings                 & Text data                & Language identifiers; 'no label' for unrecognizable languages        \\
+    \hline
+    New Genre Detection        & Music feature embeddings        & Audio tracks             & Music genre identifiers; 'no label' for unconventional genres        \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{1.5px}
+  \caption{Data Analysis Tasks and their Representations}
+  \label{tab:tasks}
+\end{table}
 
 \paragraph{Permutation Invariance in Neural Network}
 Problem
