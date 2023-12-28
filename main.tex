@@ -151,11 +151,24 @@ improving memory efficiency, and extending the applicability of Transformer mode
 % \[ \pi(x_i) = x_j, \, \text{for all } x_i, x_j \in \mathcal{S}, \, \text{where } i, j \in \{1, 2, \ldots, N\} \text{ and } i \neq j \implies \pi(x_i) \neq \pi(x_j) \]
 % The total number of permutations of $\mathcal{S}$ is $N!$ is the cardinality of the set $\mathcal{S}$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% https://www.math.ucdavis.edu/~anne/WQ2007/mat67-Lm-Determinant.pdf
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Definition 1} \emph{Permutation Function $\pi$}\\
-Let $\mathcal{S} = \{x_1, x_2, \ldots, x_N\}$ be a set of $N$ distinct elements. A permutation function $\pi: \mathcal{S} \rightarrow \mathcal{S}$ is defined as a bijection, meaning that each element in $\mathcal{S}$ is mapped to a unique element in $\mathcal{S}$, and every element in $\mathcal{S}$ is the image of exactly one element in $\mathcal{S}$. Formally, the permutation function $\pi$ satisfies the following condition:
-\[ \pi(x_i) = x_{\pi(i)}, \]
-where $\pi(i)$ is the index in the permuted sequence. For any two elements $x_i, x_j \in \mathcal{S}$, if $x_i \neq x_j$, then $\pi(x_i) \neq \pi(x_j)$. This ensures that distinct elements in $\mathcal{S}$ are mapped to distinct elements under $\pi$.
-The total number of permutations of $\mathcal{S}$ is $N!$ where $N$ is the cardinality of the set $\mathcal{S}$.
+Let $n \in \mathbb{Z}_{+}$be a positive integer. Then, mathematically, we define a permutation as any invertible bijective transformation of the finite set $\{1, \ldots, n\}$ into itself.
+% A permutation $\pi$ of $n$ elements is a one-to-one and onto function having the set $\{1,2, \ldots, n\}$ as both its domain and codomain.
+Thus, a permutation is a function $\pi:\{1,2, \ldots, n\} \longrightarrow\{1,2, \ldots, n\}$ such that, 
+for every integer $i \in\{1, \ldots, n\}$, there exists exactly one integer $j \in\{1, \ldots, n\}$ for which 
+\begin{align}
+\pi(j)=i.
+\end{align}
+% Let $\mathcal{S} = \{x_1, x_2, \ldots, x_N\}$ be a set of $N$ distinct elements. A permutation function $\pi: \mathcal{S} \rightarrow \mathcal{S}$ is defined as a bijection, meaning that each element in $\mathcal{S}$ is mapped to a unique element in $\mathcal{S}$, and every element in $\mathcal{S}$ is the image of exactly one element in $\mathcal{S}$. Formally, the permutation function $\pi$ satisfies the following condition:
+% \[ \pi(x_i) = x_{\pi(i)}, \]
+% where $\pi(i)$ is the index in the permuted sequence. For any two elements $x_i, x_j \in \mathcal{S}$, if $x_i \neq x_j$, then $\pi(x_i) \neq \pi(x_j)$. This ensures that distinct elements in $\mathcal{S}$ are mapped to distinct elements under $\pi$.
+% The total number of permutations of $\mathcal{S}$ is $N!$ where $N$ is the cardinality of the set $\mathcal{S}$.
+
+
+
 
 
 \paragraph{Definition 2} \emph{Order Permutation Function $\tau$}\\
@@ -167,7 +180,7 @@ For a tuple input, the action of order permutation function \(\tau\) on the orig
 where each element \( x_i \) is relocated to the position \( \pi(i) \).
 
 \paragraph{Definition 3} \emph{Mapping Permutation Function \(\sigma\)}\\
-Given a set of labeled elements \( \mathcal{S} = \{x_1, x_2, \sdots, x_N\} \), a permutation function \(\pi\) is a bijection from this set onto itself, such that  \(\pi(x_n) = x_m\),
+Given a set of labeled elements \( \mathcal{S} = \{x_1, x_2, \sdots, x_N\} \), a permutation function \(\pi\) is a bijection from this set onto itself, such that \(\pi(x_n) = x_m\),
 where each element \( x_n \) is mapped to the position of another element \( x_m \), where $n \neq m$.
 The function takes a tuple of elements that include repetition of elements,
 (e.g., $(x_1, x_2, x_2,x_3, x_3,x_1,\sdots,x_1,)$),
@@ -218,15 +231,15 @@ as in Property \ref{par:permutation_equivariance} according to $\tau$. Similarly
 of the components of $f(\mathbf{x})$ and  $f(\mathbf{x_{\sigma}})$, respectively, in the same manner.
 
 \paragraph{Example 1 (\poemi)}
-From a set of $n$-tuples, $X^n$ from a set $X = \{a,b,c\}$, $\mathbf{a} = (a,a,b,b,b,c)$. If \emph{Permutation Order-Equivariance Mapping-Invariance} holds for a function $f$,
+From a set of $n$-tuples, $X^n$ from a set $X = \{a,b,c\}$, $\mathbf{a} = (a,a,b,b,c)$. If \emph{Permutation Order-Equivariance Mapping-Invariance} holds for a function $f$,
 then the following holds:
 \begin{align}
   \begin{split}
-    f(\mathbf{a}) & = f(a,a,c,c,c,b) \\
-                  & = f(b,b,a,a,a,c) \\
-                  & = f(b,b,c,c,c,a) \\
-                  & = f(c,c,a,a,a,b) \\
-                  & = f(c,c,b,b,b,a).
+    f(\mathbf{a}) & = f(a,a,c,c,b) 
+                    = f(b,b,a,a,c) 
+                    = f(b,b,c,c,a) 
+                    = f(c,c,a,a,b) 
+                    = f(c,c,b,b,a).
   \end{split}
 \end{align}
 
