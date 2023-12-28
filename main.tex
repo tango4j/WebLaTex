@@ -13,11 +13,11 @@
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-%     \usepackage[preprint]{neurips_2023}
+\usepackage[preprint]{neurips_2023}
 
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-\usepackage[final]{neurips_2023}
+% \usepackage[final]{neurips_2023}
 
 
 % to avoid loading the natbib package, add option nonatbib:
@@ -70,6 +70,12 @@
 % \AND instead of \And before the third author name.
 
 
+\newcommand{\poemi}{\emph{Permutation Order-Equivariance Mapping-Invariance}}
+\newcommand{\perminv}{\emph{Permutation Invariance}}
+\newcommand{\permeq}{\emph{Permutation Equivariance}}
+
+\newcommand\sdots{\makebox[1em][c]{.\hfil.\hfil.}}
+
 \author{%
   Taejin Park \thanks{Use footnote for providing further information
     about author (webpage, alternative address)---\emph{not} for acknowledging
@@ -107,53 +113,156 @@ NVIDIA, Santa Clara, CA, USA
 
 
 \begin{abstract}
-  We propose \textit{SortFormer} architecture, which is a Transformer variant that encodes permutation information into hidden states. We address the challenge of permutation invariance in processing sequential data using Transformer architectures. Despite their effectiveness in learning and generalizing across text, speech, and image data, Transformers struggle with inputs where permutations should be disregarded. This limitation often results in significant overfitting where the trained model hardly handles permutations on on the unseen datapoints. We identify that the inherent design of the original Transformer architecture contributes to this deficiency.
-  % To overcome this, we introduce \textit{SortFormer}, a novel architecture that integrates a sorting mechanism to establish a unique representation for various permutations. 
-  SortFormer operates by generating estimated labels at each layer, which are then sorted according to their arrival order. These sequentially ordered labels serve as a permutative encoding, guiding the Transformer model in recognizing the sequence order. Through ablation studies, we demonstrate that SortFormer exhibits reduced overfitting and enhanced generalization capabilities on unseen data sequences. Furthermore, we provide insights into the practical applicability of SortFormer in real-world scenarios. Our findings suggest that this innovative architecture holds significant promise for improving the robustness and versatility of Transformer models in handling permutation-sensitive sequential data.
-  % We propose a novel but concise way to tackle the permutation problem for sequential data. While there are numerous variants of transformer architecture that can successfully learn sequential data and generalize the problem for text, speech and image. However, when it comes to inputs where the combination of permutation should be ignored, it is very challenging to let Transformer to learn only non-permutative information and generalize on the unseen data points. Thus, we show that the original Transformer architecture does not have ability to resolve permutation problem which leads to significant overfitting. We introduce a new type of architecture SortFormer which uses sorting mechanism to generate a unique representation for numerous permutations. SortFormer generates the estimated label at each layer then sort the labels in terms of arrival order. The sorted estimated labels are employed as permutative encoding to inform the order of sequence to the Transformer model. We show that the proposed architecture shows far less amount of overfitting and generalize better on unseen sequences through ablation studies. In addition, we show that the proposed architecture can be used for the real-life problems.  
+  We propose \textit{SortFormer} architecture, which is a Transformer variant that encodes permutation information into hidden states. We address the challenge of permutation invariance 
+  in processing sequential data using Transformer architectures. Despite their effectiveness in learning and generalizing across text, speech, and image data, 
+  Transformers struggle with inputs where permutations should be disregarded. This limitation often results in significant overfitting where the trained model hardly handles 
+  permutations on the unseen datapoints. We identify that the inherent design of the original Transformer architecture contributes to this deficiency.
+  SortFormer operates by generating estimated labels at each layer, which are then sorted according to their arrival order. These sequentially ordered labels serve as
+  a permutative encoding, guiding the Transformer model in recognizing the sequence order. 
+  Through ablation studies, we demonstrate that SortFormer exhibits reduced overfitting and enhanced generalization capabilities on unseen data sequences.
+  Furthermore, we provide insights into the practical applicability of SortFormer in real-world scenarios. 
+  Our findings suggest that this innovative architecture holds significant promise for improving the robustness and versatility of 
+  Transformer models in handling permutation-sensitive sequential data.
 \end{abstract}
 
 
 \section{Introduction}
-Testing autobuild 8 \\
-In recent years, the large language models (LLMs) \cite{radford2019language, rao2022megatron} gained significant popularity and most of the LLMs are based on the Transformer~\cite{vaswani2017attention} architecture that is now being used for not only language modeling
-as language understanding \cite{devlin2018bert, raffel2019learning}, GPT3~\cite{brown2020gpt3}. Other tasks such as image processing field also started leveraging Transformers such as image generation~\cite{parmar2018image} and image recognition with ViT~\cite{dosovitskiy2020image}. In speech recognition field, Conformer~\cite{gulati2020conformer} and Whisper~\cite{radford2023robust} successfully employed Transformer archietcture to speech-to-text (STT) tasks.
+In recent years, the large language models (LLMs) \cite{radford2019language, rao2022megatron} gained significant popularity and most of the LLMs are based on the Transformer~\cite{vaswani2017attention}
+architecture that is now being used for not only language modeling
+as language understanding \cite{devlin2018bert, raffel2019learning}, GPT3~\cite{brown2020gpt3}. Other tasks such as image processing field also started leveraging
+Transformers such as image generation~\cite{parmar2018image} and image recognition with ViT~\cite{dosovitskiy2020image}. In speech recognition field, Conformer~\cite{gulati2020conformer}
+and Whisper~\cite{radford2023robust} successfully employed Transformer archietcture to speech-to-text (STT) tasks.
 
 \paragraph{Transformer Variants for Efficiency}
-The wide adoption of Transformer architecture also led to more efficient variants of the model such as Reformer~\cite{kitaev2019reformer}, which introduces efficient memory handling in Transformers through locality-sensitive hashing; Transformer-XL~\cite{dai2019transformer}, enhancing Transformer models for long sequence tasks with segment-level recurrence and a novel positional encoding; Performe~\cite{choromanski2020rethinking}, offering a scalable Transformer variant with the new attention mechanism for processing long sequences efficiently; Longformer~\cite{beltagy2020longformer}, designed for longer texts with a modified attention mechanism that combines sliding window and global attention for tasks like document classification and question answering; SegFormer~\cite{xie2021segformer}, an approach for semantic segmentation combining a hierarchical Transformer encoder with a lightweight MLP decoder; and RoFormer\cite{su2023roformer}, which enhances Transformer models with a rotational position encoding scheme for improved performance in various natural language processing tasks. These variants showcase significant advancements in handling long sequences, improving memory efficiency, and extending the applicability of Transformer models in various domains, including text and image processing.
+The wide adoption of Transformer architecture also led to more efficient variants of the model such as Reformer~\cite{kitaev2019reformer},
+which introduces efficient memory handling in Transformers through locality-sensitive hashing; Transformer-XL~\cite{dai2019transformer},
+enhancing Transformer models for long sequence tasks with segment-level recurrence and a novel positional encoding;
+Performer~\cite{choromanski2020rethinking}, offering a scalable Transformer variant with a new attention mechanism for processing long sequences efficiently;
+Longformer~\cite{beltagy2020longformer}, designed for longer texts with a modified attention mechanism that combines sliding window and global attention for tasks like document classification and question answering;
+SegFormer~\cite{xie2021segformer}, an approach for semantic segmentation combining a hierarchical Transformer encoder with a lightweight MLP decoder; and
+RoFormer\cite{su2023roformer}, which enhances Transformer models with a rotational position encoding scheme for improved performance in various natural language processing tasks.
+These variants showcase significant advancements in handling long sequences,
+improving memory efficiency, and extending the applicability of Transformer models in various domains, including text and image processing.
+
+
+% \paragraph{Definition 1} \emph{Permutation Function $\pi$}\\
+% For a set $\mathcal{S} = \{x_1, x_2, \ldots, x_N\}$ of distinct elements, a permutation function $\pi: \mathcal{S} \rightarrow \mathcal{S}$ is a bijection. 
+% The permutation function $\pi$ implies the following:
+% \[ \pi(x_i) = x_j, \, \text{for all } x_i, x_j \in \mathcal{S}, \, \text{where } i, j \in \{1, 2, \ldots, N\} \text{ and } i \neq j \implies \pi(x_i) \neq \pi(x_j) \]
+% The total number of permutations of $\mathcal{S}$ is $N!$ is the cardinality of the set $\mathcal{S}$.
+
+\paragraph{Definition 1} \emph{Permutation Function $\pi$}\\
+Let $\mathcal{S} = \{x_1, x_2, \ldots, x_N\}$ be a set of $N$ distinct elements. A permutation function $\pi: \mathcal{S} \rightarrow \mathcal{S}$ is defined as a bijection, meaning that each element in $\mathcal{S}$ is mapped to a unique element in $\mathcal{S}$, and every element in $\mathcal{S}$ is the image of exactly one element in $\mathcal{S}$. Formally, the permutation function $\pi$ satisfies the following condition:
+\[ \pi(x_i) = x_{\pi(i)}, \]
+where $\pi(i)$ is the index in the permuted sequence. For any two elements $x_i, x_j \in \mathcal{S}$, if $x_i \neq x_j$, then $\pi(x_i) \neq \pi(x_j)$. This ensures that distinct elements in $\mathcal{S}$ are mapped to distinct elements under $\pi$.
+The total number of permutations of $\mathcal{S}$ is $N!$ where $N$ is the cardinality of the set $\mathcal{S}$.
+
+
+\paragraph{Definition 2} \emph{Order Permutation Function $\tau$}\\
+Given a length $M$ tuple $\mathbf{x} = (x_1, \sdots, x_M) $, a permutation function \(\pi\) is a bijection from the set of indices $\mathcal{S}=\{1, \sdots, M\}$ to itself.
+For a tuple input, the action of order permutation function \(\tau\) on the original tuple in a reordered set $\mathbf{x_{\tau}}$  as follows:
+\begin{align}
+ \mathbf{x}_{\tau} = \tau\big(\mathbf{x} \big) = \tau\big( x_{1}, \sdots, x_{M} \big) = (x_{\pi(1)}, \sdots, x_{\pi(M)} )
+\end{align}
+where each element \( x_i \) is relocated to the position \( \pi(i) \).
+
+\paragraph{Definition 3} \emph{Mapping Permutation Function \(\sigma\)}\\
+Given a set of labeled elements \( \mathcal{S} = \{x_1, x_2, \sdots, x_N\} \), a permutation function \(\pi\) is a bijection from this set onto itself, such that  \(\pi(x_n) = x_m\),
+where each element \( x_n \) is mapped to the position of another element \( x_m \), where $n \neq m$.
+The function takes a tuple of elements that include repetition of elements,
+(e.g., $(x_1, x_2, x_2,x_3, x_3,x_1,\sdots,x_1,)$),
+and maps each element to a unique element in the same set.
+For a tuple input $\mathbf{x}$, the action of \(\sigma\) on an element in the set results in a reordered set as follows:
+\begin{align}
+  \mathbf{x_{\sigma}} = \sigma(\mathbf{x}) = \sigma\big(x_1, x_2,\sdots,x_N) = (\pi(x_1), \pi(x_2), \sdots, \pi(x_N))
+\end{align}
+% where each element \( x_n \) is mapped to the position of another element \( x_m \), such that \(\pi(x_n) = x_m\).
+This ensures that every element \( x_n \) in the original set is uniquely associated with one and only one element \( x_m \) in the reordered set, and vice versa.
+
+\paragraph{Property 1 (\perminv)}
+\label{par:permutation_invariance}
+Let $\mathcal{X}$ be a set and $\mathcal{Y}$ be a codomain. A function $f: 2^{\mathcal{X}} \rightarrow \mathcal{Y}$ is said to be \textit{permutation invariant}
+if, for any subset $\{x_1, \sdots, x_M\} \subseteq \mathcal{X}$ and any permutation $\pi$ of the indices $\{1, \sdots, M\}$, the following holds:
+\begin{align}
+  f\left(x_1, \sdots, x_M\right) = f\left(x_{\pi(1)}, \sdots, x_{\pi(M)}\right).
+\end{align}
+This property means that the output of $f$ is independent of the order of the elements in its input set.
+
+\paragraph{Property 2 (\permeq)}
+\label{par:permutation_equivariance}
+Let $\pi$ be a permutation of $\{1, 2, \sdots, n\}$, and let $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a function. Then, $f$ is said to be \emph{permutation equivariant}
+if for every input $\mathbf{x} = (x_1, x_2, \sdots, x_n) \in \mathbb{R}^n$, it holds that
+\begin{equation}
+  f(\tau(\mathbf{x})) = \tau(f(\mathbf{x})),
+\end{equation}
+where $\tau(\mathbf{x})$ represents the permutation of the components of $\mathbf{x}$ according to $\tau$, and $\tau(f(\mathbf{x}))$
+represents the permutation of the components of $f(\mathbf{x})$ in the same manner. Thus, equivalently, the following equality holds:
+\begin{equation}
+  (x_{\pi(1)}, x_{\pi(2)}, \sdots, x_{\pi(n)}) = (f(x_{\pi(1)}), f(x_{\pi(2)}), \sdots, f(x_{\pi(n)})).
+\end{equation}
+
+\paragraph{Property 3 (\poemi)}
+Let $X$ be a set, and let $X^n$ denote the set of all $n$-tuples where each element belongs to $X$.
+Define a function $f: X^n \rightarrow X^n$,
+where \( f \) maps an \( n \)-tuple in \( X^n \) to another \( n \)-tuple in the same set.
+The function $f$ is said to possess \emph{Permutation Order-Equivariance Mapping-Invariance} if and only if
+for any $n$-tuple $\mathbf{x} = (x_1, x_2, \sdots, x_n)$ in $X^n$
+and any permutation of $\mathbf{x}$, denoted as $\mathbf{x}_{\sigma} = (\pi(x_1), \pi(x_2), \sdots, \pi(x_n))$,
+created by any bijective permutation mapping function $\sigma : X \rightarrow X$,
+the following equality holds:
+\begin{align}
+  f(\tau(\mathbf{x})) = \tau(f(\mathbf{x})) =  \tau(f(\mathbf{x}_{\sigma})) = f(\tau(\mathbf{x_{\sigma}}))
+\end{align}
+where $\tau(\mathbf{x})$ and $\tau(\mathbf{x_{\sigma}})$ represents the permutation of the components of $\mathbf{x}$ and $\mathbf{x_{\sigma}}$, respectively,
+as in Property \ref{par:permutation_equivariance} according to $\tau$. Similarly, $\tau(f(\mathbf{x}))$ and $\tau(f(\mathbf{x_{\sigma}}))$ represent the permutation
+of the components of $f(\mathbf{x})$ and  $f(\mathbf{x_{\sigma}})$, respectively, in the same manner.
+
+\paragraph{Example 1 (\poemi)}
+From a set of $n$-tuples, $X^n$ from a set $X = \{a,b,c\}$, $\mathbf{a} = (a,a,b,b,b,c)$. If \emph{Permutation Order-Equivariance Mapping-Invariance} holds for a function $f$,
+then the following holds:
+\begin{align}
+  \begin{split}
+    f(\mathbf{a}) & = f(a,a,c,c,c,b) \\
+                  & = f(b,b,a,a,a,c) \\
+                  & = f(b,b,c,c,c,a) \\
+                  & = f(c,c,a,a,a,b) \\
+                  & = f(c,c,b,b,b,a).
+  \end{split}
+\end{align}
+
+\paragraph{Permutation Invariance/Equivariance for Multi-head Attention}
+The multi-head attention (MHA) architecture proposed in \cite{vaswani2017attention} is a key component of the Transformer model, which can be described as follows:
+\begin{align}
+  \text{MHA}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\mathbf{O}_1, \sdots, \mathbf{O}_h) \mathbf{W}^O,
+\end{align}
+where $\mathbf{Q}, \mathbf{K}, \mathbf{V} \in \mathbb{R}^{n \times d}$ are the query, key, and value matrices, respectively,
+and $\mathbf{W}^O \in \mathbb{R}^{hd \times d}$ is a trainable parameter matrix. And each head is defined as:
+\begin{align}
+  \mathbf{O}_i = \text{Attention}(\mathbf{Q} \mathbf{W}_i^Q, \mathbf{K} \mathbf{W}_i^K, \mathbf{V} \mathbf{W}_i^V),
+\end{align}
+where $\mathbf{W}_i^Q, \mathbf{W}_i^K, \mathbf{W}_i^V \in \mathbb{R}^{d \times d/h}$ are trainable parameter matrices.
 
 \paragraph{Problem that SortFormer solves}
-% In the application for language modeling in \cite{radford2019language} or speech recognition \cite{radford2023robust}, input sequence $\mathbf{X}$ 
-
-% The input sequence \( \mathbf{X} \) can be represented as:
-% \begin{align}
-%   \mathbf{X} & = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_T\} \\
-%   \mathbf{Y} & = \{\mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_T\}
-% \end{align}
-
-% where each \( \mathbf{x}_i \) is a vector representing a token or embedding in the input sequence.
-% Output Sequence
-% The output sequence \( \mathbf{Y} \) can be represented as:
-% where each \( \mathbf{y}_j \) is a vector representing a token in the output sequence.
-
 We propose a model designed for the simultaneous estimation of class presences from a sequence of input tokens.
 Consider a set of frame-wise \( F \)-dimensional embedding vectors
-$ \{ \mathbf{x}_t \}_{t=1}^T $, where $ \mathbf{x}_t \in \mathbb{R}^D, t = 1, 2, \ldots, T $, representing the frame index.
-Given the input sequence, the model is expected to generate the estimated sequence $\{ \mathbf{y}_t \}_{t=1}^T$, where $ \mathbf{y}_t \in \mathbb{R}^K, t = 1, 2, \ldots, T $.
-SortFormer is tasked with estimating the class presences \( \left\{\mathbf{y}_t\right\}_{t=1}^T \). In this context, $\mathbf{y}_t =$ {\small $\left[y_{1, t}, y_{2, t}, \ldots, y_{K, t}\right]^{\top}$}
-denotes the class presences of \( K \) classes at time \( t \). SortFormer operates under the assumption that $ y_{k, t} $ is conditionally independent given the embedding vectors (features). This assumption is formalized as:
+$ \{ \mathbf{x}_t \}_{t=1}^T $, where $ \mathbf{x}_t \in \mathbb{R}^D, t = 1, 2, \sdots, T $, representing the frame index.
+Given the input sequence, the model is expected to generate the estimated sequence $\{ \mathbf{y}_t \}_{t=1}^T$, where $ \mathbf{y}_t \in \mathbb{R}^K, t = 1, 2, \sdots, T $.
+SortFormer is tasked with estimating the class presences \( \left\{\mathbf{y}_t\right\}_{t=1}^T \). In this context, $\mathbf{y}_t =$ {\small $\left[y_{1, t}, y_{2, t}, \sdots, y_{K, t}\right]^{\top}$}
+denotes the class presences of \( K \) classes at time \( t \). SortFormer operates under the assumption that $ y_{k, t} $ is conditionally independent given the embedding vectors (features).
+Therefore, Sortformer is employing \textit{Sigmoid} instead of \textit{Softmax} unlike the activation function for the output layer in \cite{vaswani2017attention,radford2019language}.
+This assumption is formalized as:
 
 \begin{align}
-  P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) = \prod_{k=1}^K\prod_{t=1}^T  P\left(y_{k, t} \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right).
+  P\left(\mathbf{y}_1, \sdots, \mathbf{y}_T \mid \mathbf{x}_1, \sdots, \mathbf{x}_T\right) = \prod_{k=1}^K\prod_{t=1}^T  P\left(y_{k, t} \mid \mathbf{x}_1, \sdots, \mathbf{x}_T\right).
 \end{align}
 
 Under this framework, the task at hand is construed as a multi-label classification problem, which is amenable to modeling via a neural network, denoted as  $f_{\Theta}$. The model is defined as:
 
 \begin{align}
-  \left(\mathbf{p}_1, \ldots, \mathbf{p}_T\right) = f_{\Theta}\left(\mathbf{x}_1, \ldots, \mathbf{x}_T\right),
+  \left(\mathbf{p}_1, \sdots, \mathbf{p}_T\right) = f_{\Theta}\left(\mathbf{x}_1, \sdots, \mathbf{x}_T\right),
 \end{align}
 
-where \( \mathbf{p}_t = \left[p_{1, t}, \ldots, p_{K, t}\right]^{\top} \in (0,1)^S \) represents the posterior probabilities of the presences of \( S \) classes at frame index \( t \) and f represents
+where \( \mathbf{p}_t = \left[p_{1, t}, \sdots, p_{K, t}\right]^{\top} \in (0,1)^S \) represents the posterior probabilities of the presences of \( S \) classes at frame index \( t \) and f represents
 the Sortformer model with parameter.
 Each \( y_{k, t} \) is defined as follows depending on the value of \( p_{k, t} \):
 \begin{align}
@@ -167,11 +276,11 @@ Each \( y_{k, t} \) is defined as follows depending on the value of \( p_{k, t} 
 The estimation of class presences $\left\{\hat{\mathbf{y}}_t\right\}_{t=1}^T$ is given by:
 
 \begin{align}
-  (\hat{\mathbf{y}}_1, \ldots, \hat{\mathbf{y}}_T) & = \underset{\mathbf{y}_k \in \mathbf{Y}}{\arg\max} \big\{ P\left(\mathbf{y}_1, \ldots, \mathbf{y}_T \mid \mathbf{x}_1, \ldots, \mathbf{x}_T\right) \big\},
+  (\hat{\mathbf{y}}_1, \sdots, \hat{\mathbf{y}}_T) & = \underset{\mathbf{y}_t \in \mathbf{Y}}{\arg\max} \big\{ P\left(\mathbf{y}_1, \sdots, \mathbf{y}_T \mid \mathbf{x}_1, \sdots, \mathbf{x}_T\right) \big\},
   \label{eq:sortformer_vector}
 \end{align}
-The equation \ref{eq:sortformer_vector} can be rewritten in matrix form by concatenating the vectors $ \mathbf{X} = [ \mathbf{x}_1 \mathbf{x}_2 \ldots, \mathbf{x}_T ] $,
-where each column of $\mathbf{Y}$ represents the class presences at time $t$, $ \mathbf{Y} = [\mathbf{y}_1 \, \mathbf{y}_2 \, \ldots \, \mathbf{y}_T]$.
+The equation \ref{eq:sortformer_vector} can be rewritten in matrix form by concatenating the vectors $ \mathbf{X} = [ \mathbf{x}_1 \mathbf{x}_2 \sdots, \mathbf{x}_T ] $,
+where each column of $\mathbf{Y}$ represents the class presences at time $t$, $ \mathbf{Y} = [\mathbf{y}_1 \, \mathbf{y}_2 \, \sdots \, \mathbf{y}_T]$.
 In the simplest form, the model can be represented as:
 \begin{align}
   \mathbf{Y} = f_{\Theta}\left(\mathbf{X}\right),
@@ -179,42 +288,27 @@ In the simplest form, the model can be represented as:
 where \( \mathbf{X} \in \mathbb{R}^{D \times T} \) is the input sequence and \( \mathbf{Y} \in \mathbb{R}^{K \times T} \) is a binary matrix contains an output sequence.
 
 \paragraph{Task Description}
-% The most crucial part of the problem is the number of none-zero rows in the output sequence $\mathbf{Y}$ is determined by the estimation 
-% from the model based on the input sequence \( \mathbf{X} \), where $\mathbf{X}$ is an unseen type of data. The model needs to
-% count the number of classes in the input sequence and generate the corresponding class label for each class.
-% While this problem has similar characteristics to the clustering problem where we need to count the number of clusters and assign the cluster
-% labels, the difference is: first, most of the clustering systems cannot handle the multiple labels for each data point. 
-% Second, the clustering systems cannot handle `no label` case where no identifiable patterns exist in the frame. 
-
-% For example, the most suitable example for this problem is the speaker diarization problem. In speaker diarization problem,
-% the input sequence is the audio signal and the output sequence is the generic identifiers (e.g., speaker1, speaker2, ..., speakerN) \
-% for each frame. However, there are frames where speakers do not exist where the output $\mathbf{y}_t$ is all zeros. 
-% In addition, there are frames where multiple speakers exist where the output $\mathbf{y}_t$ is a binary vector with multiple ones.
-% This type of formulation is not only applicable to speaker diarization task, but also applicable to numerous other problems such as object detection in 
-% anomaly detection in time series data, 
-% open-set recognition in image classification,
-% unknown language detection in natural language processing
-% new genre detection in music classification
-% and so on.
-
 In this problem, the core challenge lies in the output sequence $\mathbf{Y}$, where the number of frames have non-zero $\mathbf{y}_{t}$ is determined by the model's estimation
 based on the input sequence $\mathbf{X}$. Here, $\mathbf{X}$ represents an unseen type of data. The model's task is to count the number of distinct classes
 within the input sequence and generate corresponding class labels for each identified class.
 
-It is crucial to make a clearn distinction between the problem that SortFormer is tackling and the well known tasks such as clustering, identification tasks. 
+It is crucial to make a clearn distinction between the problem that SortFormer is tackling and the well known tasks such as clustering, identification tasks.
 This problem shares similarities with clustering tasks, open-set recognition tasks where the objective is to count the number of clusters and assign labels to them. However,
 there are follwing key characteristics that distinguish this problem from the aforementioned tasks:
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Infer Unseen Data Class} The task is not a typical classification task, where the model needs to classify the unseen type of class. For example, 
-  in open-set face indexing, the model needs to identify the face of people that have not been seen during training time. 
-  \item \textbf{Multi-labels} Each token into SortFormer can have multiple labels. For example, one picture can contain multiple people's faces. Most clustering systems are not designed to assign multiple labels to a single data point.
-  \item \textbf{Non-Event Classification} The system should detect ``class absence'', which requires the model to learn the characteristics of null-class characteristics of the feature input. 
-  Clustering methods typically do not accommodate cases with 'void class', where no discernible patterns exist within a given frame.
-  \item \textbf{Set-based Label Assignment Loss} The model should count the number of sets and label each frame accordingly to get generic identifiers. Followingly, the loss should be calculated based on the set-based label assignment. 
-  This aspect is often handled with permutation invariant loss (PIL).
-  \item \textbf{Small-scale Set Count} The task is expecting $K<10$ classes, which is a small-scale set count. Most of the neural network based clustering systems are designed to handle large-scale set count where $K > 1000$. This also
-  decreases the burden of applying sorting algorithm on the output classes.
+  \item \textbf{Infer Unseen Data Class} The task is not a typical classification task, where the model needs to classify the unseen type of class. For example,
+        in open-set face indexing, the model needs to identify the face of people that have not been seen during training time.
+  \item \textbf{Multi-labels} Each token into SortFormer can have multiple labels. For example, one picture can contain multiple people's faces. Most clustering systems are not designed
+        to assign multiple labels to a single data point.
+  \item \textbf{Non-Event Classification} The system should detect ``class absence'', which requires the model to learn the characteristics of null-class characteristics of the feature input.
+        Clustering methods typically do not accommodate cases with 'void class', where no discernible patterns exist within a given frame.
+  \item \textbf{Set-based Label Assignment Loss} The model should count the number of sets and label each frame accordingly to get generic identifiers. Followingly, the loss should be
+        calculated based on the set-based label assignment.
+        This aspect is often handled with permutation invariant loss (PIL).
+  \item \textbf{Small-scale Set Count} The task is expecting $K<10$ classes, which is a small-scale set count. Most of the neural network based clustering systems are designed
+        to handle large-scale set count where $K > 1000$. This also
+        decreases the burden of applying sorting algorithm on the output classes.
 \end{itemize}
 An illustrative example is the speaker diarization problem. In speaker diarization, the input sequence is an audio signal, and the output sequence comprises
 generic identifiers (e.g., speaker1, speaker2, ..., speakerN) for each frame. However, challenges arise in frames where no speaker is present, resulting in
@@ -240,7 +334,7 @@ the following table summarizes the tasks suitable for SortFormer and their corre
     \hline
     Anomaly Detection          & Signal feature embeddings       & Time series data         & Anomaly identifiers; 'no label' for normal data points               \\
     \hline
-    Open-set Face Indexation   & Face embeddings               & Video streams            & Anonymized identifiers for each face; 'no label' for non-face frames \\
+    Open-set Face Indexation   & Face embeddings                 & Video streams            & Anonymized identifiers for each face; 'no label' for non-face frames \\
     \hline
     Unknown Language Detection & Text embeddings                 & Text data                & Language identifiers; 'no label' for unrecognizable languages        \\
     \hline
@@ -251,479 +345,112 @@ the following table summarizes the tasks suitable for SortFormer and their corre
   \caption{Data Analysis Tasks and their Representations}
   \label{tab:tasks}
 \end{table}
+Set-based label assignment loss has been widely investigated in audio signal processing field for speaker diarization tasks and source separation tasks.
 
-\paragraph{Permutation Invariance in Neural Network}
-Problem
+\paragraph{Contributions}
+The proposed method has following contributions:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Replace Permutation Invariant Loss} We show that sorting layers and skip connections can be used to replace permutation invariant loss (PIL) for the tasks 
+  that require permutation invariance treatment. 
+  \item \textbf{From Passive to Active Permutation Resolution} We define the methods that are applying permutation-invariance treatment at the loss calculation 
+  layer as passive permutation resolution. We define the methods that apply permutation-invariance treatment at the encoder model architecture level as active permutation resolution.
+  The active permutation resolution has not only the advantage of reducing the computational complexity during training time but also the advantage of handling long-context or streaming settings.
+  \item \textbf{Improved Compatibility for Multi-modal Training} We show that the proposed architecture is designed to be trained with the other embeddings or modalities to be trained with
+  a single Transformer-vairant model on top of SortFormer layer. To achieve this, Transformer-encoder type of architecture is the best fit for training the entire model with a single loss and label type.
+\end{itemize}
+
 
 \section{Prior Works}
 
-\paragraph{clustering}
-There have been numerous studies on making Transformer to perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of published work regarding general-purpose transformer variants which can handle permutation
+\paragraph{Clustering}
+There have been numerous studies on making Transformer to perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of
+published work regarding general-purpose transformer variants which can handle permutation
 
-The most closest previous study to our work is Set-Transformer \cite{lee2019set},
-\paragraph{permutation invairant loss}
+Deep clustering~\cite{hershey2016deep} approach uses an permutation invariant objective.
+The permutation invariant objective is executed by employing a $K$-dimensional embedding $V=f_\theta(x) \in \mathbb{R}^{N \times K}$, parameterized by $\theta$, such that performing some
+simple clustering in the embedding space will likely lead to a partition of $\{1, \sdots, N\}$ that is close to the target one. In this work, $V=f_\theta(x)$ is based on a deep
+The partition-based training requires a reference label indicator $Y=\left\{y_{n, c}\right\}$, mapping each element $n$ to each of $c$ arbitrary partition classes, so that $y_{n, c}=1$
+if element $n$ is in partition $c$.
+\begin{align}
+  C(\theta)=\left|V V^T-Y Y^T\right|_W^2
+\end{align}
+This objective has been used widely, this objective has not been applied with Transformer architecture.
+Moreover, clustering loss is mean sequare error loss which is different from the loss function for other tasks (e.g., cross entropy) to be trained with Transformer architecture.
 
-\paragraph{clustering}
+
+\paragraph{Permutation Invariant Neural Networks}
+There have been a few studies on making neural networks to be permutation invariant. The most well known approach is Deep sets~\cite{zaheer2017deep}.
+In \cite{zaheer2017deep} the author proposed a permutation invariant network where a function $f(X)$ operating on a set $X$ having elements from a countable universe, is valid set function,
+i.e., invariant to the permutation of instances in $X$,
+iff it can be decomposed in the form $\rho\left(\sum_{x \in X} \phi(x)\right)$, for suitable transformations $\phi$ and $\rho$.
+
+The most closest previous study to our work is Set Transformer \cite{lee2019set}, which employed pooling by multi-head attention (PMA)
+to replace the sum or mean pooling operation for $\phi(x)$ functions in Deep Sets~\cite{zaheer2017deep}.
+The author in \cite{lee2019set} compared the performance of the regular pooling methods and PMA and showed that PMA outperforms the regular mean, max or sum pooling methods.
+The Set Transformer is closely related to SortFormer in the sense that both models perform clustering task.
+However, Set Transformer requires additional hyper parameters such as inducing points $m$ and seed vector count $k$.
+In addition, Set Transformer is not designed to handle the non-event class nor the overlap of two classes where \textit{Softmax} is used for the output layer.
+Although the problem Set Transformer is tackling is not exactly the same as SortFormer, the model can be used as a baseline model for comparison with SortFormer.
+% \begin{align}
+%   \operatorname{SAB}(X)    & =\operatorname{MAB}(X, X)                               \\
+%   \operatorname{ISAB}_m(X) & =\operatorname{MAB}(X, H) \in \mathbb{R}^{n \times d},  \\
+%   \text { where } H        & =\operatorname{MAB}(I, X) \in \mathbb{R}^{m \times d} .
+% \end{align}
+
+\paragraph{Permutation Invariant Loss}
+
+There is another set of studies that have exactly the same objective as SortFormer with different approaches.
+The concept of permutation invariant loss (PIL) or permutation invariant training (PIT) was first popularized by the two studies \cite{kolbaek2017multitalker, yu2017permutation}
+for the task of speech source separation tasks which inevitably require the model to handle permutation invariant loss calculation.
+Followingly, \cite{fujita2019end} adopted the concept of PIL for the task of speaker diarization, and later improved in \cite{horiguchi2022encoder} by
+employing a sequence-to-sequence model to generate the attractors by training the model with PIL. While PIL shows promising results in the aforementioned tasks,
+it has a few limitations compared to the sorting-based mechanism.
+
+First, PIL requires O($N!$) time complexity with a brute-force method
+or at least O($N^3$) time complexity for $N$ number of classes
+to calculate the loss with the linear sum assignment algorithm that finds
+the best permutation mapping between the estimated labels and ground truth labels.
+This becomes a huge burden when the number of classes is large.
+The sorting-based loss calculation can be done in O($Nlog(N)$) time with numerous sorting algorithms and
+even can be done in O($N$) time if the sorting is based on counting sort algorithm since the keys are binary numbers.
+
+Second, we need a special type of loss function at the output layer of the model.
+This becomes a limitation when we want to train a model with a few different tasks at the same time with one ground truth.
+For example, we want to train a model with speech recognition, translation and speaker diarization tasks at the same time.
+The sorting-based mechanism does not demand any special loss function at the output layer; it can be trained with any loss function once the
+ground truth labels are sorted.
+
+Lastly, PIL-based models have a chance to learn the correlation between the estimated labels and the input features.
+This is because the model does not have any information regarding permutation until it generates the estimated labels at the output layer.
+The sorting-based mechanism alleviates the problem since the model is informed by the permutation encoding at each layer.
 
 
-\section{Permutation Invariance for Transformers}
 
-
-
-% \begin{figure}
-%     \centering
-%     \subfigure[]{ \centering
-%     \includegraphics[width=0.2\textwidth, left]{pics/TransformerEncoder.drawio.png}} 
-%     \subfigure[]{  \centering
-%     \includegraphics[width=0.24\textwidth, center]{pics/SortFormerEncoder.png}} 
-%     \subfigure[]{  \centering
-%     \includegraphics[width=0.24\textwidth, right]{pics/SortFormerEncoder.png}}
-%     % \subfigure[]{\includegraphics[width=0.24\textwidth]{monalisa.jpg}}
-%     % \caption{(a) blah (b) blah (c) blah (d) blah}
-%     \label{fig:foobar}
-% \end{figure}
 
 \begin{figure}[ht]
-  % \begin{subfigure}[width=0.5\textwidth]{}
   \begin{minipage}[b]{0.33\textwidth}
     \centering
     \includegraphics[width=0.73\linewidth]{pics/TransformerEncoder.drawio.png}
-    \caption{Caption1}
+    \caption{Transformer Encoder}
     \label{fig:subim1}
   \end{minipage}
   \begin{minipage}[b]{0.33\textwidth}
     \centering
     \includegraphics[width=0.9\linewidth]{pics/SortFormerEncoder.png}
-    \caption{Caption 2}
+    \caption{SortFormer Encoder}
     \label{fig:subim2}
   \end{minipage}
   \begin{minipage}[b]{0.33\textwidth}
     \centering
-    \includegraphics[width=0.5\linewidth]{pics/SortFormer_example.drawio.png}
-    \caption{Caption 3}
+    \includegraphics[width=0.5\linewidth]{pics/SortFormer_new-Page-4.drawio.png}
+    \caption{SortFormer Example}
     \label{fig:subim3}
   \end{minipage}
 \end{figure}
 
-
-\subsection{Copied and Pasted from a Paper}
-\cite{bloem2018neural}. This section is fo
-Let $Y \in \mathcal{Y}$ be some random variable of interest, to be predicted from $\mathbf{X}_n$. Permutation invariance of the conditional distribution $P_{Y \mid \mathbf{x}_n}$ of $Y$ given $\mathbf{X}_n$ is defined as follows.
-
-Definition 1. The conditional distribution $P_{Y \mid \mathbf{X}_n}$ of $Y$ given $\mathbf{X}_n$ is $\mathbb{S}_n$-invariant if for all $B \in \mathcal{B}(\mathcal{Y})$ and $\pi \in \mathbb{S}_n$,
-
-\begin{align}
-  P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{Y \mid \mathbf{X}_n}\left[Y \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
-\end{align}
-
-Together with exchangeability of $P_{\mathbf{X}_n}$, conditional invariance implies the joint equality $\left(\pi \cdot \mathbf{X}_n, Y\right) \stackrel{\text { d }}{=}\left(\mathbf{X}_n, Y\right)$ for all $\pi \in \mathbb{S}_n$.
-
-In the neural networks literature, equivariance plays a key role in the hidden layers of invariant deterministic neural networks $[2,8,6]$. As we show in Section 2, the following adaptation to random variables plays the same role in $\mathbb{S}_n$-invariant stochastic neural networks.
-
-Definition 2. Let $\mathbf{Y}_n \in \mathcal{Y}^n$ be a random $\mathcal{Y}$-valued sequence. The conditional distribution $P_{\mathbf{Y}_n \mid \mathbf{x}_n}$ of $\mathbf{Y}_n$ given $\mathbf{X}_n$ is $\mathbb{S}_n$-equivariant if for all $B \in \mathcal{B}\left(\mathcal{Y}^n\right)$ and $\pi \in \mathbb{S}_n$,
-
-\begin{align}
-  P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\pi \cdot \mathbf{Y}_n \in B \mid \pi \cdot \mathbf{X}_n\right]=P_{\mathbf{Y}_n \mid \mathbf{X}_n}\left[\mathbf{Y}_n \in B \mid \mathbf{X}_n\right] \quad \text { a.s. }-P_{\mathbf{X}_n} .
-\end{align}
-
-Together with exchangeability of $P_{\mathbf{X}_n}$, conditional invariance implies the joint equality $\left(\pi \cdot \mathbf{X}_n, \pi \cdot \mathbf{Y}_n\right) \stackrel{\mathrm{d}}{=}\left(\mathbf{X}_n, \mathbf{Y}_n\right)$ for all $\pi \in \mathbb{S}_n$
-
-
-\section{Submission of papers to NeurIPS 2023}
-
-
-Please \cite{vaswani2017attention} read the instructions below carefully and follow them faithfully. \textbf{Important:} This year the checklist will be submitted separately from the main paper in OpenReview, please review it well ahead of the submission deadline: \url{https://neurips.cc/public/guides/PaperChecklist}.
-
-
-\subsection{Style}
-
-
-Papers to be submitted to NeurIPS 2023 must be prepared according to the
-instructions presented here. Papers may only be up to {\bf nine} pages long,
-including figures. Additional pages \emph{containing only acknowledgments and
-  references} are allowed. Papers that exceed the page limit will not be
-reviewed, or in any other way considered for presentation at the conference.
-
-
-The margins in 2023 are the same as those in previous years.
-
-
-Authors are required to use the NeurIPS \LaTeX{} style files obtainable at the
-NeurIPS website as indicated below. Please make sure you use the current files
-and not previous versions. Tweaking the style files may be grounds for
-rejection.
-
-
-\subsection{Retrieval of style files}
-
-
-The style files for NeurIPS and other conference information are available on
-the website at
-\begin{center}
-  \url{http://www.neurips.cc/}
-\end{center}
-The file \verb+neurips_2023.pdf+ contains these instructions and illustrates the
-various formatting requirements your NeurIPS paper must satisfy.
-
-
-The only supported style file for NeurIPS 2023 is \verb+neurips_2023.sty+,
-rewritten for \LaTeXe{}.  \textbf{Previous style files for \LaTeX{} 2.09,
-  Microsoft Word, and RTF are no longer supported!}
-
-
-The \LaTeX{} style file contains three optional arguments: \verb+final+, which
-creates a camera-ready copy, \verb+preprint+, which creates a preprint for
-submission to, e.g., arXiv, and \verb+nonatbib+, which will not load the
-\verb+natbib+ package for you in case of package clash.
-
-
-\paragraph{Preprint option}
-If you wish to post a preprint of your work online, e.g., on arXiv, using the
-NeurIPS style, please use the \verb+preprint+ option. This will create a
-nonanonymized version of your work with the text ``Preprint. Work in progress.''
-in the footer. This version may be distributed as you see fit, as long as you do not say which conference it was submitted to. Please \textbf{do
-  not} use the \verb+final+ option, which should \textbf{only} be used for
-papers accepted to NeurIPS.
-
-
-At submission time, please omit the \verb+final+ and \verb+preprint+
-options. This will anonymize your submission and add line numbers to aid
-review. Please do \emph{not} refer to these line numbers in your paper as they
-will be removed during the generation of camera-ready copies.
-
-
-The file \verb+neurips_2023.tex+ may be used as a ``shell'' for writing your
-paper. All you have to do is replace the author, title, abstract, and text of
-the paper with your own.
-
-
-The formatting instructions contained in these style files are summarized in
-Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
-
-
-\section{General formatting instructions}
-\label{gen_inst}
-
-
-The text must be confined within a rectangle 5.5~inches (33~picas) wide and
-9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
-type with a vertical spacing (leading) of 11~points.  Times New Roman is the
-preferred typeface throughout, and will be selected for you by default.
-Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
-indentation.
-
-
-The paper title should be 17~point, initial caps/lower case, bold, centered
-between two horizontal rules. The top rule should be 4~points thick and the
-bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
-below the title to rules. All pages should start at 1~inch (6~picas) from the
-top of the page.
-
-
-For the final version, authors' names are set in boldface, and each name is
-centered above the corresponding address. The lead author's name is to be listed
-first (left-most), and the co-authors' names (if different address) are set to
-follow. If there is only one co-author, list both author and co-author side by
-side.
-
-
-Please pay special attention to the instructions in Section \ref{others}
-regarding figures, tables, acknowledgments, and references.
-
-
-\section{Headings: first level}
-\label{headings}
-
-
-All headings should be lower case (except for first word and proper nouns),
-flush left, and bold.
-
-
-First-level headings should be in 12-point type.
-
-
-\subsection{Headings: second level}
-
-
-Second-level headings should be in 10-point type.
-
-
-\subsubsection{Headings: third level}
-
-
-Third-level headings should be in 10-point type.
-
-
-\paragraph{Paragraphs}
-
-
-There is also a \verb+\paragraph+ command available, which sets the heading in
-bold, flush left, and inline with the text, with the heading followed by 1\,em
-of space.
-
-
-\section{Citations, figures, tables, references}
-\label{others}
-
-
-These instructions apply to everyone.
-
-
-\subsection{Citations within the text}
-
-
-The \verb+natbib+ package will be loaded for you by default.  Citations may be
-author/year or numeric, as long as you maintain internal consistency.  As to the
-format of the references themselves, any style is acceptable as long as it is
-used consistently.
-
-
-The documentation for \verb+natbib+ may be found at
-\begin{center}
-  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-Of note is the command \verb+\citet+, which produces citations appropriate for
-use in inline text.  For example,
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-produces
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-
-If you wish to load the \verb+natbib+ package with options, you may add the
-following before loading the \verb+neurips_2023+ package:
-\begin{verbatim}
-   \PassOptionsToPackage{options}{natbib}
-\end{verbatim}
-
-
-If \verb+natbib+ clashes with another package you load, you can add the optional
-argument \verb+nonatbib+ when loading the style file:
-\begin{verbatim}
-   \usepackage[nonatbib]{neurips_2023}
-\end{verbatim}
-
-
-As submission is double blind, refer to your own published work in the third
-person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
-previous work [4].'' If you cite your other papers that are not widely available
-(e.g., a journal paper under review), use anonymous author names in the
-citation, e.g., an author of the form ``A.\ Anonymous'' and include a copy of the anonymized paper in the supplementary material.
-
-
-\subsection{Footnotes}
-
-
-Footnotes should be used sparingly.  If you do require a footnote, indicate
-footnotes with a number\footnote{Sample of the first footnote.} in the
-text. Place the footnotes at the bottom of the page on which they appear.
-Precede the footnote with a horizontal rule of 2~inches (12~picas).
-
-
-Note that footnotes are properly typeset \emph{after} punctuation
-marks.\footnote{As in this example.}
-
-
-\subsection{Figures}
-
-
-\begin{figure}
-  \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
-\end{figure}
-
-
-All artwork must be neat, clean, and legible. Lines should be dark enough for
-purposes of reproduction. The figure number and caption always appear after the
-figure. Place one line space before the figure caption and one line space after
-the figure. The figure caption should be lower case (except for first word and
-proper nouns); figures are numbered consecutively.
-
-
-You may use color figures.  However, it is best for the figure captions and the
-paper body to be legible if the paper is printed in either black/white or in
-color.
-
-
-\subsection{Tables}
-
-
-All tables must be centered, neat, clean and legible.  The table number and
-title always appear before the table.  See Table~\ref{sample-table}.
-
-
-Place one line space before the table title, one line space after the
-table title, and one line space after the table. The table title must
-be lower case (except for first word and proper nouns); tables are
-numbered consecutively.
-
-
-Note that publication-quality tables \emph{do not contain vertical rules.} We
-strongly suggest the use of the \verb+booktabs+ package, which allows for
-typesetting high-quality, professional tables:
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-This package was used to typeset Table~\ref{sample-table}.
-
-
-\begin{table}
-  \caption{Sample table title}
-  \label{sample-table}
-  \centering
-  \begin{tabular}{lll}
-    \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
-    \midrule
-    Dendrite & Input terminal  & $\sim$100     \\
-    Axon     & Output terminal & $\sim$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\subsection{Math}
-Note that display math in bare TeX commands will not create correct line numbers for submission. Please use LaTeX (or AMSTeX) commands for unnumbered display math. (You really shouldn't be using \$\$ anyway; see \url{https://tex.stackexchange.com/questions/503/why-is-preferable-to} and \url{https://tex.stackexchange.com/questions/40492/what-are-the-differences-between-align-equation-and-displaymath} for more information.)
-
-\subsection{Final instructions}
-
-Do not change any aspects of the formatting parameters in the style files.  In
-particular, do not modify the width or length of the rectangle the text should
-fit into, and do not change font sizes (except perhaps in the
-\textbf{References} section; see below). Please note that pages should be
-numbered.
-
-
-\section{Preparing PDF files}
-
-
-Please prepare submission files with paper size ``US Letter,'' and not, for
-example, ``A4.''
-
-
-Fonts were the main cause of problems in the past years. Your PDF file must only
-contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
-achieve this.
-
-
-\begin{itemize}
-
-
-  \item You should directly generate PDF files using \verb+pdflatex+.
-
-
-  \item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
-        menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
-        also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
-        available out-of-the-box on most Linux machines.
-
-
-  \item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
-        "solid" shapes instead.
-
-
-  \item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
-        the equivalent AMS Fonts:
-        \begin{verbatim}
-   \usepackage{amsfonts}
-\end{verbatim}
-        followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
-        for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
-        workaround for reals, natural and complex:
-        \begin{verbatim}
-   \newcommand{\RR}{I\!\!R} %real numbers
-   \newcommand{\Nat}{I\!\!N} %natural numbers
-   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-\end{verbatim}
-        Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
-
-
-\end{itemize}
-
-
-If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
-you to fix it.
-
-
-\subsection{Margins in \LaTeX{}}
-
-
-Most of the margin problems come from figures positioned by hand using
-\verb+\special+ or other commands. We suggest using the command
-\verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
-figure width as a multiple of the line width as in the example below:
-\begin{verbatim}
-   \usepackage[pdftex]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-\end{verbatim}
-See Section 4.4 in the graphics bundle documentation
-(\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
-
-
-A number of width problems arise when \LaTeX{} cannot properly hyphenate a
-line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
-necessary.
-
-
-\begin{ack}
-  Use unnumbered first level headings for the acknowledgments. All acknowledgments
-  go at the end of the paper before the list of references. Moreover, you are required to declare
-  funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
-  More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2023/PaperInformation/FundingDisclosure}.
-
-
-  Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
-\end{ack}
-
-
-
-\section{Supplementary Material}
-
-Authors may wish to optionally include extra information (complete proofs, additional experiments and plots) in the appendix. All such materials should be part of the supplemental material (submitted separately) and should NOT be included in the main submission.
-
-
-\section*{References}
-
-
-References follow the acknowledgments in the camera-ready paper. Use unnumbered first-level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-when listing the references.
-Note that the Reference section does not count towards the page limit.
 \medskip
 
 \bibliography{sortformer}
 \bibliographystyle{plainnat}
-% \bibliographystyle{}
-
-
-% {
-% \small
-
-
-% [1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-% connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-% (eds.), {\it Advances in Neural Information Processing Systems 7},
-% pp.\ 609--616. Cambridge, MA: MIT Press.
-
-
-% [2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-%   Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-% TELOS/Springer--Verlag.
-
-
-% [3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-% recall at excitatory recurrent synapses and cholinergic modulation in rat
-% hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
-% }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \end{document}
