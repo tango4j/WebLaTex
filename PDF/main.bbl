@@ -1,4 +1,4 @@
-\begin{thebibliography}{18}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -9,11 +9,6 @@
 Iz~Beltagy, Matthew~E Peters, and Arman Cohan.
 \newblock Longformer: The long-document transformer.
 \newblock \emph{arXiv preprint arXiv:2004.05150}, 2020.
-
-\bibitem[Bloem-Reddy and Teh(2018)]{bloem2018neural}
-Benjamin Bloem-Reddy and Yee~Whye Teh.
-\newblock Neural network models of exchangeable sequences.
-\newblock In \emph{NeurIPS Workshop on Bayesian Deep Learning}, 2018.
 
 \bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subramanian, Kaplan, Dhariwal, Neel, Shyam, Mishkin, and Radford]{brown2020gpt3}
 Tom~B Brown, Benjamin Mann, Nick Ryder, Mike Subramanian, Jared Kaplan, Praveen Dhariwal, Dario Neel, Pranav Shyam, Adam Mishkin, and Alec Radford.
@@ -40,15 +35,35 @@ Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua
 \newblock An image is worth 16x16 words: Transformers for image recognition at scale.
 \newblock \emph{arXiv preprint arXiv:2010.11929}, 2020.
 
+\bibitem[Fujita et~al.(2019)Fujita, Kanda, Horiguchi, Xue, Nagamatsu, and Watanabe]{fujita2019end}
+Yusuke Fujita, Naoyuki Kanda, Shota Horiguchi, Yawen Xue, Kenji Nagamatsu, and Shinji Watanabe.
+\newblock End-to-end neural speaker diarization with self-attention.
+\newblock In \emph{2019 IEEE Automatic Speech Recognition and Understanding Workshop (ASRU)}, pages 296--303. IEEE, 2019.
+
 \bibitem[Gulati et~al.(2020)Gulati, Qin, Chiu, Parmar, Zhang, Yu, Han, Wang, Zhang, Wu, et~al.]{gulati2020conformer}
 Anmol Gulati, James Qin, Chung-Cheng Chiu, Niki Parmar, Yu~Zhang, Jiahui Yu, Wei Han, Shibo Wang, Zhengdong Zhang, Yonghui Wu, et~al.
 \newblock Conformer: Convolution-augmented transformer for speech recognition.
 \newblock \emph{arXiv preprint arXiv:2005.08100}, 2020.
 
+\bibitem[Hershey et~al.(2016)Hershey, Chen, Le~Roux, and Watanabe]{hershey2016deep}
+John~R Hershey, Zhuo Chen, Jonathan Le~Roux, and Shinji Watanabe.
+\newblock Deep clustering: Discriminative embeddings for segmentation and separation.
+\newblock In \emph{2016 IEEE international conference on acoustics, speech and signal processing (ICASSP)}, pages 31--35. IEEE, 2016.
+
+\bibitem[Horiguchi et~al.(2022)Horiguchi, Fujita, Watanabe, Xue, and Garcia]{horiguchi2022encoder}
+Shota Horiguchi, Yusuke Fujita, Shinji Watanabe, Yawen Xue, and Paola Garcia.
+\newblock Encoder-decoder based attractors for end-to-end neural diarization.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 30:\penalty0 1493--1507, 2022.
+
 \bibitem[Kitaev et~al.(2019)Kitaev, Kaiser, and Levskaya]{kitaev2019reformer}
 Nikita Kitaev, Lukasz Kaiser, and Anselm Levskaya.
 \newblock Reformer: The efficient transformer.
 \newblock In \emph{International Conference on Learning Representations}, 2019.
+
+\bibitem[Kolb{\ae}k et~al.(2017)Kolb{\ae}k, Yu, Tan, and Jensen]{kolbaek2017multitalker}
+Morten Kolb{\ae}k, Dong Yu, Zheng-Hua Tan, and Jesper Jensen.
+\newblock Multitalker speech separation with utterance-level permutation invariant training of deep recurrent neural networks.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 25\penalty0 (10):\penalty0 1901--1913, 2017.
 
 \bibitem[Lee et~al.(2019)Lee, Lee, Kim, Kosiorek, Choi, and Teh]{lee2019set}
 Juho Lee, Yoonho Lee, Jungtaek Kim, Adam Kosiorek, Seungjin Choi, and Yee~Whye Teh.
@@ -94,5 +109,15 @@ Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N
 Enze Xie, Wenhai Wang, Zhiding Yu, Anima Anandkumar, Jose~M Alvarez, and Ping Luo.
 \newblock Segformer: Simple and efficient design for semantic segmentation with transformers.
 \newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 12077--12090, 2021.
+
+\bibitem[Yu et~al.(2017)Yu, Kolb{\ae}k, Tan, and Jensen]{yu2017permutation}
+Dong Yu, Morten Kolb{\ae}k, Zheng-Hua Tan, and Jesper Jensen.
+\newblock Permutation invariant training of deep models for speaker-independent multi-talker speech separation.
+\newblock In \emph{2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, pages 241--245. IEEE, 2017.
+
+\bibitem[Zaheer et~al.(2017)Zaheer, Kottur, Ravanbakhsh, Poczos, Salakhutdinov, and Smola]{zaheer2017deep}
+Manzil Zaheer, Satwik Kottur, Siamak Ravanbakhsh, Barnabas Poczos, Russ~R Salakhutdinov, and Alexander~J Smola.
+\newblock Deep sets.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
 
 \end{thebibliography}

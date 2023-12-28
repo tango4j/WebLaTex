@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: sortformer.bib
-You've used 18 entries,
+You've used 23 entries,
             2773 wiz_defined-function locations,
-            680 strings with 9279 characters,
-and the built_in function-call counts, 13116 in all, are:
-= -- 1032
-> -- 1301
-< -- 6
-+ -- 435
-- -- 417
-* -- 1199
-:= -- 2092
-add.period$ -- 56
-call.type$ -- 18
-change.case$ -- 189
-chr.to.int$ -- 18
-cite$ -- 36
-duplicate$ -- 449
-empty$ -- 721
-format.name$ -- 437
-if$ -- 2666
+            708 strings with 10559 characters,
+and the built_in function-call counts, 16603 in all, are:
+= -- 1348
+> -- 1559
+< -- 8
++ -- 521
+- -- 498
+* -- 1512
+:= -- 2614
+add.period$ -- 74
+call.type$ -- 23
+change.case$ -- 231
+chr.to.int$ -- 23
+cite$ -- 46
+duplicate$ -- 585
+empty$ -- 956
+format.name$ -- 521
+if$ -- 3407
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 18
-newline$ -- 98
-num.names$ -- 72
-pop$ -- 399
+missing$ -- 23
+newline$ -- 123
+num.names$ -- 92
+pop$ -- 482
 preamble$ -- 1
-purify$ -- 171
+purify$ -- 208
 quote$ -- 0
-skip$ -- 438
+skip$ -- 554
 stack$ -- 0
-substring$ -- 256
-swap$ -- 84
-text.length$ -- 5
+substring$ -- 416
+swap$ -- 116
+text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 198
+type$ -- 253
 warning$ -- 0
-while$ -- 70
+while$ -- 98
 width$ -- 0
-write$ -- 232
+write$ -- 301

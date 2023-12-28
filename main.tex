@@ -364,19 +364,19 @@ Set-based label assignment loss has been widely investigated in audio signal pro
 The proposed method has following contributions:
 \begin{itemize}[leftmargin=*]
   \item \textbf{Replace Permutation Invariant Loss} We show that sorting layers and skip connections can be used to replace permutation invariant loss (PIL) for the tasks 
-  that require permutation invariance treatment. 
-  \item \textbf{From Passive to Active Permutation Resolution} We define the methods that are applying permutation-invariance treatment at the loss calculation 
-  layer as passive permutation resolution. We define the methods that apply permutation-invariance treatment at the encoder model architecture level as active permutation resolution.
+  that require permutation invariance treatment. SortFormer can be trained by regular cross-entropy loss without any permutation-free mechanism.
+  \item \textbf{From Passive to Active Permutation Resolution} We define the methods that apply permutation invariant treatment at the loss calculation 
+  layer as passive permutation resolution. We define the methods that apply permutation invariant treatment at the encoder model architecture level as active permutation resolution.
   The active permutation resolution has not only the advantage of reducing the computational complexity during training time but also the advantage of handling long-context or streaming settings.
   \item \textbf{Improved Compatibility for Multi-modal Training} We show that the proposed architecture is designed to be trained with the other embeddings or modalities to be trained with
-  a single Transformer-vairant model on top of SortFormer layer. To achieve this, Transformer-encoder type of architecture is the best fit for training the entire model with a single loss and label type.
+  a single Transformer-vairant model on top of SortFormer layer. To achieve this, Transformer encoder type of architecture is the best fit for training the entire model with a single loss and label type.
 \end{itemize}
 
 
 \section{Prior Works}
 
 \paragraph{Clustering}
-There have been numerous studies on making Transformer to perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of
+There have been numerous studies on making Transformer perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of
 published work regarding general-purpose transformer variants which can handle permutation
 
 Deep clustering~\cite{hershey2016deep} approach uses an permutation invariant objective.
