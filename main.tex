@@ -379,7 +379,7 @@ The proposed method has following contributions:
 There have been numerous studies on making Transformer perceive longer context, model compressing for memory efficiency and sparse models. However, there have been limited number of
 published work regarding general-purpose transformer variants which can handle permutation
 
-Deep clustering~\cite{hershey2016deep} approach uses an permutation invariant objective.
+Deep clustering~\cite{hershey2016deep} approach uses a permutation invariant objective.
 The permutation invariant objective is executed by employing a $K$-dimensional embedding $V=f_\theta(x) \in \mathbb{R}^{N \times K}$, parameterized by $\theta$, such that performing some
 simple clustering in the embedding space will likely lead to a partition of $\{1, \sdots, N\}$ that is close to the target one. In this work, $V=f_\theta(x)$ is based on a deep
 The partition-based training requires a reference label indicator $Y=\left\{y_{n, c}\right\}$, mapping each element $n$ to each of $c$ arbitrary partition classes, so that $y_{n, c}=1$
@@ -387,22 +387,31 @@ if element $n$ is in partition $c$.
 \begin{align}
   C(\theta)=\left|V V^T-Y Y^T\right|_W^2
 \end{align}
-This objective has been used widely, this objective has not been applied with Transformer architecture.
+This objective has been used widely, this objective has not been applied to Transformer architecture.
 Moreover, clustering loss is mean sequare error loss which is different from the loss function for other tasks (e.g., cross entropy) to be trained with Transformer architecture.
+In this paper, we categorize permutation-invariant loss calculation as passive permutation resolution approach, since the model itself does not have any mechanism to handle permutation.
+Thus, during inference time, no permutation handling is done.
 
 
 \paragraph{Permutation Invariant Neural Networks}
-There have been a few studies on making neural networks to be permutation invariant. The most well known approach is Deep sets~\cite{zaheer2017deep}.
+As opposed to passive permutation resolution, there have been a few studies on making neural networks to be permutation invariant, which can be categorized as active permutation resolution.
+In active permutation resolution approaches, the model itself has a mechanism to handle permutation while making it permutation invariant or equivariant and these permutation handling mechanism happens
+during both training and inference time.
+The most well known approach is Deep sets~\cite{zaheer2017deep}.
 In \cite{zaheer2017deep} the author proposed a permutation invariant network where a function $f(X)$ operating on a set $X$ having elements from a countable universe, is valid set function,
 i.e., invariant to the permutation of instances in $X$,
 iff it can be decomposed in the form $\rho\left(\sum_{x \in X} \phi(x)\right)$, for suitable transformations $\phi$ and $\rho$.
+The proposed methods in Deep Sets can either handle permutation-order invariant or equivariant. 
+As we discssed in the previous section, the task that SortFormer is tackling is Permutation Order-Equivariance Mapping-Invariance, not permutation order invariant.
+More importantly, if we exclude positional encoding, the Transformer architecture is permutation order equivariant.
 
-The most closest previous study to our work is Set Transformer \cite{lee2019set}, which employed pooling by multi-head attention (PMA)
+This led to permutation order invariant architecture Set Transformer \cite{lee2019set}, which employed pooling by multi-head attention (PMA)
 to replace the sum or mean pooling operation for $\phi(x)$ functions in Deep Sets~\cite{zaheer2017deep}.
 The author in \cite{lee2019set} compared the performance of the regular pooling methods and PMA and showed that PMA outperforms the regular mean, max or sum pooling methods.
 The Set Transformer is closely related to SortFormer in the sense that both models perform clustering task.
-However, Set Transformer requires additional hyper parameters such as inducing points $m$ and seed vector count $k$.
-In addition, Set Transformer is not designed to handle the non-event class nor the overlap of two classes where \textit{Softmax} is used for the output layer.
+However, Set Transformer~\cite{lee2019set} is designed to make Transformer architecture permutation order invariant, while SortFormer is designed to make Permutation Order-Equivariant Mapping-Invariant.
+In addition, Set Transformer requires additional hyper parameters such as inducing points $m$ and seed vector count $k$.
+Another difference is that Set Transformer is not designed to handle the non-event class nor the overlap of two classes where \textit{Softmax} is used for the output layer.
 Although the problem Set Transformer is tackling is not exactly the same as SortFormer, the model can be used as a baseline model for comparison with SortFormer.
 % \begin{align}
 %   \operatorname{SAB}(X)    & =\operatorname{MAB}(X, X)                               \\
@@ -436,6 +445,8 @@ ground truth labels are sorted.
 Lastly, PIL-based models have a chance to learn the correlation between the estimated labels and the input features.
 This is because the model does not have any information regarding permutation until it generates the estimated labels at the output layer.
 The sorting-based mechanism alleviates the problem since the model is informed by the permutation encoding at each layer.
+Thus, when it comes to streaming setup or long-context settings, PIL-trained models need to match the permutation with the old and new estimated labels,
+while the sorting-based mechanism can simply assign the labels in terms of arrival orders.
 
 
 
