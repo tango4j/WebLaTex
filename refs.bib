@@ -1,0 +1,439 @@
+@InProceedings{C2,
+  author = 	 "Jones, C.D. and Smith, A.B. and Roberts, E.F.",
+  title =        "Article Title",
+  booktitle =        "Proceedings Title",
+  organization = "IEEE",
+  year = 	 "2003",
+  volume = 	 "II",
+  pages = 	 "803-806"
+}
+
+%%% LLM foundational papers
+@article{ouyang2022training,
+  title={Training language models to follow instructions with human feedback},
+  author={Ouyang, Long and Wu, Jeffrey and Jiang, Xu and Almeida, Diogo and Wainwright, Carroll and Mishkin, Pamela and Zhang, Chong and Agarwal, Sandhini and Slama, Katarina and Ray, Alex and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={27730--27744},
+  year={2022}
+}
+
+@article{gpt-4_2023,
+author = {Bubeck, Sébastien and Chandrasekaran, Varun and Eldan, Ronen and Gehrke, Johannes and Horvitz, Eric and Kamar, Ece and Lee, Peter and Lee, Yin Tat and Li, Yuanzhi and Lundberg, Scott and Nori, Harsha and Palangi, Hamid and Ribeiro, Marco Tulio and Zhang, Yi},
+title = {GPT-4: Technical Report},
+journal = {arXiv preprint arXiv:2303.08774},
+year = {2023},
+month = {3},
+day = {8},
+url = {https://arxiv.org/abs/2303.08774},
+accessed = {2023-08-06},
+}
+
+@article{anil2023palm,
+  title={Palm 2 technical report},
+  author={Anil, Rohan and Dai, Andrew M and Firat, Orhan and Johnson, Melvin and Lepikhin, Dmitry and Passos, Alexandre and Shakeri, Siamak and Taropa, Emanuel and Bailey, Paige and Chen, Zhifeng and others},
+  journal={arXiv preprint arXiv:2305.10403},
+  year={2023}
+}
+@article{touvron2023llama,
+  title={Llama 2: Open foundation and fine-tuned chat models},
+  author={Touvron, Hugo and Martin, Louis and Stone, Kevin and Albert, Peter and Almahairi, Amjad and Babaei, Yasmine and Bashlykov, Nikolay and Batra, Soumya and Bhargava, Prajjwal and Bhosale, Shruti and others},
+  journal={arXiv preprint arXiv:2307.09288},
+  year={2023}
+}
+
+%%% Taejin's research papers on lexical info for diar
+@inproceedings{park2020speaker,
+  title={Speaker diarization with lexical information},
+  author={Park, Tae Jin and others},
+  booktitle={Proc. Interspeech},
+  pages={391--395},
+  year={2019},
+  organization={ISCA}
+}
+
+@inproceedings{park2018multimodal,
+  title={Multimodal speaker segmentation and diarization using lexical and acoustic cues via sequence to sequence neural networks},
+  author={Park, Tae Jin and Georgiou, Panayiotis},
+  booktitle={Proc. Interspeech},
+  pages={1373--1377},
+  year={2018},
+  organization={ISCA}
+}
+% Old lexical info aided diarizaiton papers
+@inproceedings{canseco2004speaker,
+  title={Speaker diarization from speech transcripts},
+  author={Canseco-Rodriguez, Leonardo and Lamel, Lori and Gauvain, Jean-Luc},
+  booktitle={Proc. ICSLP},
+  volume={4},
+  pages={3--7},
+  year={2004}
+}
+@inproceedings{canseco2005comparative,
+  title={A comparative study using manual and automatic transcriptions for diarization},
+  author={Canseco, Leonardo and Lamel, Lori and Gauvain, J-L},
+  booktitle={Proc. ASRU},
+  pages={415--419},
+  year={2005},
+  organization={IEEE}
+}
+
+
+% BEAM SEARCH for CTC
+@inproceedings{ney1987data,
+  title={A data-driven organization of the dynamic programming beam search for continuous speech recognition},
+  author={Ney, Hermann and others},
+  booktitle={Proc. ICASSP},
+  volume={12},
+  pages={833--836},
+  year={1987},
+  organization={IEEE}
+}
+
+@inproceedings{scheidl2018word,
+  title={Word beam search: A connectionist temporal classification decoding algorithm},
+  author={Scheidl, Harald and others},
+  booktitle={Proc. ICFHR},
+  pages={253--258},
+  year={2018},
+  organization={IEEE}
+}
+
+@inproceedings{graves2006connectionist,
+  title={Connectionist temporal classification: labelling unsegmented sequence data with recurrent neural networks},
+  author={Graves, Alex and others},
+  booktitle={Proc. ICML},
+  pages={369--376},
+  year={2006}
+}
+
+@article{graves2012sequence,
+  title={Sequence transduction with recurrent neural networks},
+  author={Graves, Alex},
+  journal={arXiv preprint arXiv:1211.3711},
+  year={2012}
+}
+
+%%% ASR based multi-model diarization + ASR
+@inproceedings{shafey2019joint,
+  title={Joint Speech Recognition and Speaker Diarization via Sequence Transduction},
+  author={El Shafey, Laurent and others},
+  booktitle={Proc. Interspeech},
+  pages={396--400},
+  year={2019},
+  organization={ISCA},
+}
+
+@inproceedings{medennikov2020target,
+  title={Target-speaker voice activity detection: a novel approach for multi-speaker diarization in a dinner party scenario},
+  author={Medennikov, Ivan and others},
+  booktitle={Proc. Interspeech},
+  pages={274--278},
+  year={2020},
+  organization={ISCA}
+}
+
+@article{cornell2023chime,
+  title={{The} {CHiME-7 DASR} {C}hallenge: Distant Meeting Transcription with Multiple Devices in Diverse Scenarios},
+  author={Cornell, Samuele and others},
+  journal={CHiME-7 Workshop},
+  year={2023}
+}
+
+@inproceedings{khare2022asr,
+  title={ASR-aware end-to-end neural diarization},
+  author={Khare, Aparna and others},
+  booktitle={Proc. ICASSP},
+  pages={8092--8096},
+  year={2022},
+  organization={IEEE}
+}
+
+@inproceedings{xia2022turn,
+  title={Turn-to-diarize: Online speaker diarization constrained by transformer transducer speaker turn detection},
+  author={Xia, Wei and others},
+  booktitle={Proc. ICASSP},
+  pages={8077--8081},
+  year={2022},
+  organization={IEEE}
+}
+
+@inproceedings{kanda2022transcribe,
+  title={Transcribe-to-diarize: Neural speaker diarization for unlimited number of speakers using end-to-end speaker-attributed ASR},
+  author={Kanda, Naoyuki and others},
+  booktitle={Proc. ICASSP},
+  pages={8082--8086},
+  year={2022},
+  organization={IEEE}
+}
+
+@article{anidjar2023speech,
+  title={Speech and multilingual natural language framework for speaker change detection and diarization},
+  author={Anidjar, Or Haim and Est{\`e}ve, Yannick and Hajaj, Chen and Dvir, Amit and Lapidot, Itshak},
+  journal={Expert Systems with Applications},
+  volume={213},
+  pages={119238},
+  year={2023},
+  publisher={Elsevier}
+}
+
+@article{anidjar2021hybrid,
+  title={Hybrid speech and text analysis methods for speaker change detection},
+  author={Anidjar, Or Haim and Lapidot, Itshak and Hajaj, Chen and Dvir, Amit and Gilad, Issachar},
+  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  volume={29},
+  pages={2324--2338},
+  year={2021},
+  publisher={IEEE}
+}
+
+@article{flemotomos2019linguistically,
+  title={Linguistically aided speaker diarization using speaker role information},
+  author={Flemotomos, Nikolaos and Georgiou, Panayiotis and Narayanan, Shrikanth},
+  journal={arXiv preprint arXiv:1911.07994},
+  year={2019}
+}
+
+%%% Post processing Style
+@article{paturi2023lexical,
+  title={Lexical speaker error correction: Leveraging language models for speaker diarization error correction},
+  author={Paturi, Rohit and others},
+  journal={arXiv preprint arXiv:2306.09313},
+  year={2023}
+}
+
+@inproceedings{cheng2023exploring,
+  title={Exploring Speaker-Related Information in Spoken Language Understanding for Better Speaker Diarization},
+  author={Cheng, Luyao and others},
+  booktitle={arXiv preprint arXiv:2305.12927},
+  year={2023},
+organization={IEEE},
+}
+
+@inproceedings{murali2023improving,
+  title={Improving multiparty interactions with a robot using large language models},
+  author={Murali, Prasanth and Steenstra, Ian and Yun, Hye Sun and Shamekhi, Ameneh and Bickmore, Timothy},
+  booktitle={Extended Abstracts of the 2023 CHI Conference on Human Factors in Computing Systems},
+  pages={1--8},
+  year={2023}
+}
+
+@inproceedings{wessel2000using,
+  title={Using posterior word probabilities for improved speech recognition},
+  author={Wessel, Frank and others},
+  booktitle={2000 IEEE International Conference on Acoustics, Speech, and Signal Processing. Proceedings (Cat. No. 00CH37100)},
+  volume={3},
+  pages={1587--1590},
+  year={2000},
+  organization={IEEE}
+}
+
+@misc{pyctcdecode,
+author = {Kensho Technologies},
+title = { {PyCTCDecode}: A fast and lightweight python-based {CTC} beam search decoder for speech recognition},
+year = {2023},
+url = {https://github.com/kensho-technologies/pyctcdecode},
+note = {[Accessed 09-06-2023]},
+}
+
+@inproceedings{park2022multi,
+  title={Multi-scale speaker diarization with dynamic scale weighting},
+  author={Park, Tae Jin and others},
+  booktitle={Proc. Interspeech},
+  year={2022},
+  organization={ISCA}
+}
+
+
+@article{park2023chime,
+  title={The {CHiME-7 Challenge}: System Description and Performance of NeMo Team's {DASR} System},
+  author={Park, Tae Jin and others},
+  journal={CHiME-7 Workshop},
+  year={2023},
+}
+
+@article{park2023property,
+  title={Property-Aware Multi-Speaker Data Simulation: A Probabilistic Modelling Technique for Synthetic Data Generation},
+  author={Tae Jin Park, He Huang, Coleman Hooper, Nithin Koluguri, Kunal Dhawan, Ante Juki\'{c}, Jagadeesh Balam, Boris Ginsburg},
+  journal={CHIME-7 Workshop},
+  year={2023},
+}
+
+
+@inproceedings{heafield2011kenlm,
+  title={{KenLM}: Faster and smaller language model queries},
+  author={Heafield, Kenneth and others},
+  booktitle={Proc. SMT Workshop},
+  pages={187--197},
+  year={2011}
+}
+
+@article{shoeybi2019megatron,
+  title={Megatron-{LM}: Training multi-billion parameter language models using model parallelism},
+  author={Shoeybi, Mohammad and others},
+  journal={arXiv preprint arXiv:1909.08053},
+  year={2019}
+}
+
+@misc{panayotov2015librispeech,
+  author = {Panayotov, Vassil and others},
+  title = {{LibriSpeech}: an ASR corpus based on public domain audio books},
+  year = {2015},
+  url = {https://www.openslr.org/11/},
+  note = {[Accessed 09-06-2023]},
+}
+
+@inproceedings{gulati2020conformer,
+  title={Conformer: Convolution-augmented transformer for speech recognition},
+  author={Gulati, Anmol and others},
+  booktitle={Proc. Interspeech},
+  pages={5036--5040},
+  year={2020},
+  organization={ISCA},
+}
+
+@article{kuchaiev2019nemo,
+  title={{NeMo}: a toolkit for building ai applications using neural modules},
+  author={Kuchaiev, Oleksii and others},
+  journal={arXiv preprint arXiv:1909.09577},
+  year={2019}
+}
+@inproceedings{koluguri2022titanet,
+  title={{TitaNet}: Neural Model for speaker representation with 1D Depth-wise separable convolutions and global context},
+  author={Koluguri, Nithin Rao and others},
+  booktitle={Proc. ICASSP},
+  pages={8102--8106},
+  year={2022},
+  organization={IEEE}
+}
+
+@article{park2019auto,
+  title={Auto-tuning spectral clustering for speaker diarization using normalized maximum eigengap},
+  author={Park, Tae Jin and others},
+  journal={IEEE SPL},
+  volume={27},
+  pages={381--385},
+  year={2019},
+  publisher={IEEE}
+}
+
+@article{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and others},
+  journal={Proc. NIPS},
+  volume={30},
+  year={2017}
+}
+
+@article{watanabe2020chime,
+  title={{CHiME-6} challenge: Tackling multispeaker speech recognition for unsegmented recordings},
+  author={Watanabe, Shinji and others},
+  journal={arXiv preprint arXiv:2004.09249},
+  year={2020}
+}
+
+@inproceedings{kraaij2005ami,
+  title={The {AMI} meeting corpus},
+  author={Kraaij, Wessel and others},
+  booktitle={Proc. International Conference on Methods and Techniques in Behavioral Research},
+  year={2005}
+}
+
+@article{landini2022bayesian,
+  title={Bayesian {HMM} clustering of x-vector sequences ({VBx}) in speaker diarization: theory, implementation and analysis on standard tasks},
+  author={Landini, Federico and others},
+  journal={CSL},
+  volume={71},
+  pages={101254},
+  year={2022},
+  publisher={Elsevier}
+}
+
+@article{van2019dipco,
+  title={DiPCo--Dinner Party Corpus},
+  author={Van Segbroeck, Maarten and Zaid, Ahmed and Kutsenko, Ksenia and Huerta, Cirenia and Nguyen, Tinh and Luo, Xuewen and Hoffmeister, Bj{\"o}rn and Trmal, Jan and Omologo, Maurizio and Maas, Roland},
+  journal={arXiv preprint arXiv:1909.13447},
+  year={2019}
+}
+
+
+@inproceedings{brandschain2010mixer,
+  title={Mixer 6},
+  author={Brandschain, Linda and Graff, David and Cieri, Christopher and Walker, Kevin and Caruso, Christopher and Neely, Abby},
+  booktitle={Proceedings of the Seventh International Conference on Language Resources and Evaluation (LREC'10)},
+  year={2010}
+}
+
+@inproceedings{jung2023encoder,
+  title={Encoder-decoder multimodal speaker change detection},
+  author={Jung, Jee-weon and others},
+  booktitle={Proc. Interspeech},
+  year={2023},
+  organization={ISCA},
+
+}
+
+@misc{nvidia2023nemo,
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/NVIDIA/NeMo-Megatron-Launcher}},
+  author = {NVIDIA},
+  title = {{NeMo Megatron} {L}auncher},
+  year = {2023},
+  url = {https://github.com/NVIDIA/NeMo-Megatron-Launcher},
+  note = {[Accessed 09-06-2023]},
+}
+
+@article{radford2019language,
+  title={Language models are unsupervised multitask learners},
+  author={Radford, Alec and others},
+  journal={OpenAI blog},
+  volume={1},
+  number={8},
+  pages={9},
+  year={2019}
+}
+
+@misc{openai_whisper,
+  author = {OpenAI},
+  title = {Whisper: Robust Speech Recognition via Large-Scale Weak Supervision},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/openai/whisper},
+  howpublished = {\url{https://github.com/openai/whisper}},
+note = {[Accessed 09-06-2023]},
+}
+
+@misc{huggingfaceBigcodethestackdedupDatasets,
+author = {Hugging Face},
+title = {{The-Stack-Dedup}:{D}atasets at {H}ugging {F}ace},
+howpublished = {\url{https://huggingface.co/datasets/bigcode/the-stack-dedup}},
+year = {2023},
+note = {[Accessed 09-06-2023]},
+}
+
+@article{luccioni2021s,
+  title={What's in the Box? A Preliminary Analysis of Undesirable Content in the Common Crawl Corpus},
+  author={Luccioni, Alexandra Sasha and Viviano, Joseph D},
+  journal={arXiv preprint arXiv:2105.02732},
+  year={2021}
+}
+
+@inproceedings{akiba2019optuna,
+  title={Optuna: A next-generation hyperparameter optimization framework},
+  author={Akiba, Takuya and others},
+  booktitle={Proc. the 25th ACM SIGKDD},
+  pages={2623--2631},
+  year={2019}
+}
+
+@article{park2022review,
+  title={A review of speaker diarization: Recent advances with deep learning},
+  author={Park, Tae Jin and others},
+  journal={Computer Speech and Language},
+  volume={72},
+  pages={101317},
+  year={2022},
+  publisher={Academic Press Inc.}
+}
