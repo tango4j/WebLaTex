@@ -448,7 +448,21 @@ The sorting-based mechanism alleviates the problem since the model is informed b
 Thus, when it comes to streaming setup or long-context settings, PIL-trained models need to match the permutation with the old and new estimated labels,
 while the sorting-based mechanism can simply assign the labels in terms of arrival orders.
 
+\section{Multi-speaker ASR Model}
+\subsection{Speaker Encoding}
+We employ a novel way to inform the estimated speaker labels to the model by encoding the speaker labels into the decoder part of the model.
+We propose two different setups. 
+\subsubsection{Additive Kernel-based Speaker Encoding}
+The first setup is kernel-based speaker encoding, where the speaker labels are encoded by an additive kernel function.
+The following equation is the kernel-based speaker encoding:
+\begin{align}
+    % \mathbf{Y} = f_{\Theta}\left(\mathbf{X}, \mathbf{K}, \mathbf{S}\right),
+    \mathbf{Y} = \| \mathbf{X} \|_2 + \mathbf{K}^T\cdot \mathbf{S} 
+\end{align}
+where $\mathbf{X}$ is $D$ by $T$ ASR encoder embedding, $\mathbf{K}$ is a $N_s$ by $D$ kernel matrix, 
+$\mathbf{S}$ is a $N_s$ by $T$ speaker label matrix, and $\mathbf{Y}$ is the final speaker-encoded input embedding to the decoder, which has also $D$ by $T$.
 
+\subsubsection{Angular Speaker Encoding}
 
 
 \begin{figure}[ht]
